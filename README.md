@@ -1,2 +1,2 @@
-q# Backend
+# Backend
 Backend for the Commean project.
