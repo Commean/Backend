@@ -7,6 +7,7 @@ import com.influxdb.annotations.Measurement;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -27,6 +28,6 @@ public class TrafficMeasurement {
 	@Column
 	final private int averageTimeInPicture;
 	@Column(timestamp = true)
-	final Instant timestamp = Instant.now();
+	final private Instant timestamp;
 
 }
