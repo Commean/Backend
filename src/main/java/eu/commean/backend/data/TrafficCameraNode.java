@@ -1,5 +1,7 @@
 package eu.commean.backend.data;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -24,6 +26,9 @@ public class TrafficCameraNode {
 	String longitude;
 	@NonNull
 	@ManyToOne
-	@JoinColumn(name = "crossroad_id")
+	@JoinColumn(name = "crossroad_id",referencedColumnName = "id")
 	private Crossroad crossroad;
+
+	@OneToMany(mappedBy = "trafficCameraNode", cascade = CascadeType.ALL)
+	private List<TrafficMeasurement> trafficMeasurement;
 }

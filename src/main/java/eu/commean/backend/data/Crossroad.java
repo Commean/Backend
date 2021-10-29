@@ -35,9 +35,9 @@ public class Crossroad {
 
 	@NonNull
 	String name;
-
+	
 	@OneToMany(mappedBy = "crossroad", cascade = CascadeType.ALL)
-	private List<TrafficCameraNode> TrafficCameraNode;
+	private List<TrafficCameraNode> trafficCameraNode;
 }
 
 

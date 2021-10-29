@@ -2,32 +2,45 @@ package eu.commean.backend.data;
 
 import java.time.Instant;
 
-import com.influxdb.annotations.Column;
-import com.influxdb.annotations.Measurement;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
+@Entity
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-
-@Measurement(name = "trafficMeasurement")
+//TODO Implement function to convert PostgreSQL Table to Hypertable from TimeScaleDB on first start
 public class TrafficMeasurement {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-	@Column(tag = true)
-	final private int id;
-	@Column
-	final private int truckIn;
-	@Column
-	final private int truckOut;
-	@Column
-	final private int carIn;
-	@Column
-	final private int carOut;
-	@Column
-	final private int averageTimeInPicture;
-	@Column(timestamp = true)
-	final private Instant timestamp;
+	private int truckIn;
+
+	private int truckOut;
+
+	private int carIn;
+
+	private int carOut;
+
+	private int averageTimeInPicture;
+
+	@NonNull
+	private Instant timestamp;
+
+	@NonNull
+	@ManyToOne
+	@JoinColumn(name = "trafficcameranode_id",referencedColumnName = "id")
+	private TrafficCameraNode trafficCameraNode;
 
 }
