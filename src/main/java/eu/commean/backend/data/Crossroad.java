@@ -1,9 +1,7 @@
 package eu.commean.backend.data;
 
-
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.data.geo.Point;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,9 +34,9 @@ public class Crossroad {
 
 	@NonNull
 	String name;
-	
-	@OneToMany(mappedBy = "crossroad", cascade = CascadeType.ALL)
+	@NonNull
+	private Point location;
+
+	@OneToMany(mappedBy = "crossroad")
 	private List<TrafficCameraNode> trafficCameraNode;
 }
-
-
