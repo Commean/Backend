@@ -27,19 +27,21 @@ public class TrafficCameraNodeServiceImpl implements TrafficCameraNodeService {
 	}
 
 	@Override
+	@Transactional
 	public List<TrafficCameraNode> getAllTrafficCameraNodes() {
 		return (List<TrafficCameraNode>) cameraNodeRepository.findAll();
 	}
 
 	@Override
+	@Transactional
 	public TrafficCameraNode getTrafficCameraNodeById(int id) {
 		return cameraNodeRepository.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
-	public List<TrafficCameraNode> getTrafficCameraNodesByCrossroad(Crossroad c) {		
-		return cameraNodeRepository.findByCrossroad(c);
+	public List<TrafficCameraNode> getTrafficCameraNodesByCrossroad(Crossroad c) {
+		return (List<TrafficCameraNode>) cameraNodeRepository.findByCrossroad(c);
 	}
 
 	@Override
