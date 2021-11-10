@@ -1,6 +1,8 @@
-package eu.commean.backend.service;	
+package eu.commean.backend.service;
 
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,19 +26,22 @@ public class CrossroadServiceImpl implements CrossroadService {
 	}
 
 	@Override
+	@Transactional
 	public List<Crossroad> getAllCrossroads() {
 		return (List<Crossroad>) crossroadRepository.findAll();
 	}
 
 	@Override
+	@Transactional
 	public Crossroad getCrossroadById(int id) {
 		Crossroad c = crossroadRepository.findById(id).orElse(null);
 		return c;
 	}
 
 	@Override
-	public List<Crossroad> getCrossroadByName(String name) {
-		List<Crossroad> crossroads = crossroadRepository.findByName(name);
+	@Transactional
+	public List<Crossroad> getCrossroadByCrossroadName(String name) {
+		List<Crossroad> crossroads = crossroadRepository.findByCrossroadName(name);
 		return crossroads;
 	}
 

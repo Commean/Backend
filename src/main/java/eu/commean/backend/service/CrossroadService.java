@@ -12,7 +12,7 @@ public interface CrossroadService {
 
 	Crossroad getCrossroadById(int id);
 
-	List<Crossroad> getCrossroadByName(String name);
+	List<Crossroad> getCrossroadByCrossroadName(String name);
 
-	void deleteCrossroadById(int id);	
+	void deleteCrossroadById(int id);
 }
