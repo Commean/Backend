@@ -120,3 +120,5 @@ local.properties
 # passwordfiles temporary!!!
 src/main/resources/application.yml
 src/main/resources/influx2.properties
+.gitsecret/keys/random_seed
+!*.secret
