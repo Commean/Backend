@@ -18,7 +18,7 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
-	<dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
@@ -31,17 +31,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>ch.cordsen</groupId>
+			<artifactId>geojson-serializer</artifactId>
+			<version>0.6.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.mariadb.jdbc</groupId>
-			<artifactId>mariadb-java-client</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,9 +61,9 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.influxdb</groupId>
-			<artifactId>influxdb-client-java</artifactId>
-			<version>3.3.0</version>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.3.0</version>
 		</dependency>
 
 	</dependencies>
