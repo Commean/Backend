@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,27 +29,32 @@ public class CrossroadServiceImpl implements CrossroadService {
 	@Override
 	@Transactional
 	public List<Crossroad> getAllCrossroads() {
-		return (List<Crossroad>) crossroadRepository.findAll();
-	}
-
-	@Override
-	@Transactional
-	public Crossroad getCrossroadById(int id) {
-		Crossroad c = crossroadRepository.findById(id).orElse(null);
+		List<Crossroad> c = crossroadRepository.findAll();
+		Hibernate.initialize(c);
 		return c;
 	}
 
 	@Override
 	@Transactional
+	public Crossroad getCrossroadById(int id) {
+		return crossroadRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
 	public List<Crossroad> getCrossroadByCrossroadName(String name) {
-		List<Crossroad> crossroads = crossroadRepository.findByCrossroadName(name);
-		return crossroads;
+		return crossroadRepository.findByCrossroadName(name);
 	}
 
 	@Override
 	public void deleteCrossroadById(int id) {
 		crossroadRepository.deleteById(id);
 
+	}
+
+	@Override
+	public List<Crossroad> getAllCrossroadsLazy() {
+		return crossroadRepository.findAll();
 	}
 
 }

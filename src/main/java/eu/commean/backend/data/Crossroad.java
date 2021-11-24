@@ -4,25 +4,16 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringExclude;
+import org.locationtech.jts.geom.Point;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.data.geo.Point;
 
-import ch.cordsen.geojson.annotation.GeoJson;
-import ch.cordsen.geojson.annotation.GeoJsonGeometry;
-import ch.cordsen.geojson.annotation.GeoJsonId;
-import ch.cordsen.geojson.annotation.GeoJsonProperties;
-import ch.cordsen.geojson.serializer.GeoJsonType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -37,27 +28,26 @@ import lombok.ToString;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EnableAutoConfiguration
-@GeoJson(type = GeoJsonType.FEATURE)
+
 public class Crossroad {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@GeoJsonId
+
 	private Integer id;
+
 	@NonNull
-	@GeoJsonProperties
 	String crossroadName;
+
 	@NonNull
-	@GeoJsonGeometry
-	private Point crossroadLocation;
+	private String crossroadLocation;
 
 	@ToStringExclude
-	@OneToMany(mappedBy = "crossroad",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "crossroad", cascade = CascadeType.ALL)
 	private List<TrafficCameraNode> trafficCameraNode;
 
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
 		return id * crossroadName.hashCode() * crossroadLocation.hashCode();
 	}
 
@@ -69,10 +59,9 @@ public class Crossroad {
 		return crossroadName;
 	}
 
-	public Point getCrossroadLocation() {
+	public String getCrossroadLocation() {
 		return crossroadLocation;
 	}
-	
 
 	public List<TrafficCameraNode> getTrafficCameraNode() {
 		return trafficCameraNode;
@@ -86,7 +75,7 @@ public class Crossroad {
 		this.crossroadName = crossroadName;
 	}
 
-	public void setCrossroadLocation(Point crossroadLocation) {
+	public void setCrossroadLocation(String crossroadLocation) {
 		this.crossroadLocation = crossroadLocation;
 	}
 

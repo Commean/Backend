@@ -8,6 +8,8 @@ public interface CrossroadService {
 
 	Crossroad addCrossroad(Crossroad c);
 
+	List<Crossroad> getAllCrossroadsLazy();
+	
 	List<Crossroad> getAllCrossroads();
 
 	Crossroad getCrossroadById(int id);
