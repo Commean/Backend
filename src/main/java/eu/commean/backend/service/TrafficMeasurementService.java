@@ -15,7 +15,9 @@ public interface TrafficMeasurementService {
 
 	List<TrafficMeasurement> getMeasurementsByTrafficCameraNode(TrafficCameraNode tcn);
 
-	List<TrafficMeasurement> getAllMeasrumentsFromTimespan(TrafficCameraNode tcn,String interval);
+	List<TrafficMeasurement> getAllMeasrumentsFromTimespan(int id,int days);
+	
+	TrafficMeasurement getLatestMeasurementFromId(int id);
 
 	void deleteTrafficMeasurementById(int id);
 
