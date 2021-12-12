@@ -1,5 +1,6 @@
 package eu.commean.backend.data;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 
 import javax.persistence.Entity;
@@ -10,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedNativeQuery;
 
+import org.postgresql.util.PGTimestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -17,7 +20,8 @@ import lombok.NonNull;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - INTERVAL '1 d' AND trafficcameranode_id = 1", resultClass = TrafficMeasurement.class)
+@NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - make_interval(0,0,0,:days) AND trafficcameranode_id = :id", resultClass = TrafficMeasurement.class)
+@NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > NOW() - MAKE_INTERVAL(0,0,0,0,0,1) AND id = :id ORDER BY tm.timestamp DESC LIMIT 1",resultClass = TrafficMeasurement.class)
 
 //TODO Implement function to convert PostgreSQL Table to Hypertable from TimeScaleDB on first start
 public class TrafficMeasurement {
@@ -37,7 +41,7 @@ public class TrafficMeasurement {
 	private int averageTimeInPicture;
 
 	@NonNull
-	private Instant timestamp;
+	private Timestamp timestamp;
 
 	@NonNull
 	@ManyToOne
@@ -45,7 +49,7 @@ public class TrafficMeasurement {
 	private TrafficCameraNode trafficCameraNode;
 
 	public TrafficMeasurement(int truckIn, int truckOut, int carIn, int carOut, int averageTimeInPicture,
-			@NonNull Instant timestamp, @NonNull TrafficCameraNode trafficCameraNode) {
+			@NonNull Timestamp timestamp, @NonNull TrafficCameraNode trafficCameraNode) {
 		super();
 		this.truckIn = truckIn;
 		this.truckOut = truckOut;
@@ -85,7 +89,7 @@ public class TrafficMeasurement {
 		return averageTimeInPicture;
 	}
 
-	public Instant getTimestamp() {
+	public Timestamp getTimestamp() {
 		return timestamp;
 	}
 
@@ -117,7 +121,7 @@ public class TrafficMeasurement {
 		this.averageTimeInPicture = averageTimeInPicture;
 	}
 
-	public void setTimestamp(Instant timestamp) {
+	public void setTimestamp(PGTimestamp timestamp) {
 		this.timestamp = timestamp;
 	}
 

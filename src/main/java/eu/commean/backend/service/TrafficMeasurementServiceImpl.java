@@ -60,8 +60,13 @@ public class TrafficMeasurementServiceImpl implements TrafficMeasurementService 
 	@Override
 	@Transactional
 	//TODO implement querry to select by timespan
-	public List<TrafficMeasurement> getAllMeasrumentsFromTimespan(TrafficCameraNode tcn, String interval) {
-		return (List<TrafficMeasurement>) trafficMeasurementRepository.findAllByTimespan(tcn.getId(), interval);
+	public List<TrafficMeasurement> getAllMeasrumentsFromTimespan(int tcnId, int days) {
+		return (List<TrafficMeasurement>) trafficMeasurementRepository.findAllByTimespan(tcnId, days);
+	}
+
+	@Override
+	public TrafficMeasurement getLatestMeasurementFromId(int id) {
+		return trafficMeasurementRepository.findLatestById(id).orElse(null);
 	}
 
 }

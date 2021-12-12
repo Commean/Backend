@@ -34,7 +34,7 @@ public class TrafficCameraNode {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@NonNull
-	private Point location;
+	private String location;
 	@NonNull
 	@ManyToOne
 	@ToStringExclude
@@ -54,7 +54,7 @@ public class TrafficCameraNode {
 		return id;
 	}
 
-	public Point getLocation() {
+	public String getLocation() {
 		return location;
 	}
 
@@ -70,7 +70,7 @@ public class TrafficCameraNode {
 		this.id = id;
 	}
 
-	public void setLocation(Point location) {
+	public void setLocation(String location) {
 		this.location = location;
 	}
 

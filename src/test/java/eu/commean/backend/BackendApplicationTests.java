@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +23,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
+import org.postgresql.util.PGTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -66,7 +68,7 @@ class BackendApplicationTests {
 		factory.createPoint(new Coordinate(14.2980086, 46.636018)); // LONG,LAT
 		Crossroad crossroadTest = new Crossroad("TEST_01", "POINT(14.305524230003357 46.62442463652353)");
 		TrafficCameraNode cameraNodeTest01 = new TrafficCameraNode("POINT(0,0)", crossroadTest);
-		TrafficMeasurement trafficMeasurement01 = new TrafficMeasurement(4, 4, 3, 3, 6, 2, Instant.now(),
+		TrafficMeasurement trafficMeasurement01 = new TrafficMeasurement(4, 4, 3, 3, 6, PGTimestamp.from(Instant.now()),
 				cameraNodeTest01);
 
 		// write data to mariaDB
@@ -104,9 +106,9 @@ class BackendApplicationTests {
 
 		Crossroad c = new Crossroad("TEST_02", "POINT(14.305524230003357 46.62442463652353)");
 		TrafficCameraNode tcn01 = new TrafficCameraNode("POINT(0 0)", c);
-		TrafficMeasurement tm01 = new TrafficMeasurement(10, 2, 5, 3, 3, Instant.now(), tcn01);
-		TrafficMeasurement tm02 = new TrafficMeasurement(10, 2, 5, 3, 3, Instant.now().minus(2, ChronoUnit.DAYS),
-				tcn01);
+		TrafficMeasurement tm01 = new TrafficMeasurement(10, 2, 5, 3, 3, PGTimestamp.from(Instant.now()), tcn01);
+		TrafficMeasurement tm02 = new TrafficMeasurement(10, 2, 5, 3, 3,
+				PGTimestamp.from(Instant.now().minus(2, ChronoUnit.DAYS)), tcn01);
 		c = cs.addCrossroad(c);
 		tcn01 = tcns.addTrafficCameraNode(tcn01);
 		tm01 = tms.addTrafficMeasurement(tm01);
@@ -119,7 +121,7 @@ class BackendApplicationTests {
 		log.debug("Crossroad id0: {}", crossroads.get(0).getTrafficCameraNode().get(0).getLocation());
 		assertNotNull(crossroads.get(0).getTrafficCameraNode().get(0));
 
-		assertEquals(1, tms.getAllMeasrumentsFromTimespan(tcn01, "1 d").size());
+		assertEquals(1, tms.getAllMeasrumentsFromTimespan(tcn01.getId(), 1).size());
 		assertEquals("TEST_02", cs.getCrossroadByCrossroadName("TEST_02").get(0).getCrossroadName());
 
 		assertEquals(1, tcns.getTrafficCameraNodesByCrossroad(c).size());
@@ -132,6 +134,13 @@ class BackendApplicationTests {
 		assertNull(tcns.getTrafficCameraNodeById(2));
 		assertNull(cs.getCrossroadById(2));
 
+	}
+
+	@Test
+	@DisplayName("Interval Statements")
+	void TestIntervalQuerries() {
+		TrafficMeasurement tm = tms.getAllMeasrumentsFromTimespan(1, 1).get(0);
+		log.info("Mesurement: {}|{}|{}|{}",tm.getId(),tm.getCarIn(),tm.getTruckIn(),tm.getAverageTimeInPicture());
 	}
 
 }
