@@ -1,0 +1,227 @@
+openapi: 3.0.0
+info:
+  title: Commean API
+  version: 0.0.1
+  contact:
+    name: Luca Nachbar
+    url: commean.eu
+    email: lumi200@tuta.io
+  description: 'API documentation for the Commean Backend '
+servers:
+  - url: 'http://localhost:8080/api/v1'
+    description: Demo on localhost
+paths:
+  /nodes:
+    get:
+      summary: Nodes GeoJson
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    type: FeatureCollection
+                    features:
+                      - type: Feature
+                        id: 1
+                        geometry:
+                          type: Point
+                          coordinates:
+                            - 14.30504
+                            - 46.63049
+                        properties:
+                          name: TEST_00
+                      - type: Feature
+                        id: 2
+                        geometry:
+                          type: Point
+                          coordinates:
+                            - 14.31449
+                            - 46.61867
+                        properties:
+                          name: TEST_01
+                properties:
+                  type:
+                    type: string
+                    minLength: 1
+                  features:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          minLength: 1
+                        id:
+                          type: number
+                        geometry:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              minLength: 1
+                            coordinates:
+                              type: array
+                              items:
+                                type: number
+                          required:
+                            - type
+                            - coordinates
+                        properties:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              minLength: 1
+                          required:
+                            - name
+                      required:
+                        - type
+                        - id
+                required:
+                  - type
+                  - features
+              examples:
+                Normal Output:
+                  value:
+                    type: FeatureCollection
+                    features:
+                      - type: Feature
+                        id: 1
+                        geometry:
+                          type: Point
+                          coordinates:
+                           - 14.30504
+                           - 46.63049
+                        properties:
+                          name: TEST_00
+                      - type: Feature
+                        id: 2
+                        geometry:
+                          type: Point
+                          coordinates:
+                            - 14.31449
+                            - 46.61867
+                        properties:
+                          name: TEST_01
+        '404':
+          $ref: '#/components/responses/404'
+      operationId: get-nodes
+      description: Return all nodes as GeoJson
+  /measurements/node/now:
+    get:
+      summary: Current Measurement
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  tcnId:
+                    type: number
+                  currentCars:
+                    type: number
+                  currentTrucks:
+                    type: number
+                  averageTimeInPicture:
+                    type: number
+                  trafficSituation:
+                    type: string
+                    minLength: 1
+                required:
+                  - tcnId
+                  - currentCars
+                  - currentTrucks
+                  - averageTimeInPicture
+                  - trafficSituation
+                x-examples:
+                  example-1:
+                    tcnId: 1
+                    currentCars: 0
+                    currentTrucks: 0
+                    averageTimeInPicture: 5
+                    trafficSituation: FEW
+              examples:
+                Random Measurement:
+                  value:
+                    tcnId: 1
+                    currentCars: 0
+                    currentTrucks: 0
+                    averageTimeInPicture: 5
+                    trafficSituation: FEW
+        '404':
+          $ref: '#/components/responses/404'
+      operationId: get-measurements-node-now
+      description: Retruns the latest measurement in the database
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: id
+          description: Node Id
+          required: true
+components:
+  schemas: {}
+  responses:
+    '404':
+      description: Example response
+      content:
+        application/json:
+          schema:
+            description: ''
+            type: object
+            properties:
+              timestamp:
+                type: string
+                minLength: 1
+              status:
+                type: number
+              error:
+                type: string
+                minLength: 1
+              message:
+                type: string
+                minLength: 1
+              path:
+                type: string
+                minLength: 1
+            required:
+              - timestamp
+              - status
+              - error
+              - message
+              - path
+            x-examples:
+              example-1:
+                timestamp: '2021-12-22T13:02:32.317+00:00'
+                status: 404
+                error: Not Found
+                message: No Nodes have been defined
+                path: /api/v1/nodes
+          examples:
+            No Nodes:
+              value:
+                timestamp: '2021-12-22T13:02:32.317+00:00'
+                status: 404
+                error: Not Found
+                message: No Nodes have been defined
+                path: /api/v1/nodes
+            No Measurements with id:
+              value:
+                timestamp: '2021-12-22T13:03:26.119+00:00'
+                status: 404
+                error: Not Found
+                message: No Traffic Camera Node with given id
+                path: /api/v1/measurements/node/now
+  securitySchemes: {}
