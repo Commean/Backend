@@ -2,7 +2,6 @@ package eu.commean.backend.dto;
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -20,7 +19,7 @@ import lombok.Data;
 @Data
 @GeoJson(type = GeoJsonType.FEATURE)
 @JsonSerialize(using = GeoJsonSerializer.class)
-public class CrossroadDto {
+public class NodeDto {
 
 	private static final GeometryFactory GEOMETRY_FACTORY = new GeometryFactory(new PrecisionModel(), 4326);
 	private static final WKTReader WKT_READER = new WKTReader(GEOMETRY_FACTORY);
@@ -34,7 +33,7 @@ public class CrossroadDto {
 	private String name;
 
 	@GeoJsonGeometry
-	public Geometry getLocationPoint() throws ParseException{
+	public Geometry getLocationPoint() throws ParseException {
 		return WKT_READER.read(location);
 
 	}

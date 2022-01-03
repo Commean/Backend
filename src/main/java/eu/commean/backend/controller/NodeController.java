@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import eu.commean.backend.dto.CrossroadDto;
+import eu.commean.backend.dto.NodeDto;
 import eu.commean.backend.dto.MapOverlayGeoJson;
 import eu.commean.backend.service.CrossroadService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/api/v1/nodes")
 public class NodeController {
 
@@ -26,16 +25,17 @@ public class NodeController {
 	@Autowired
 	private ModelMapper modelMapper;
 
+
 	@GetMapping(value = "")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Object getAllCrossroads() {
 
-		List<CrossroadDto> data = cs.getAllCrossroads().stream()
-				.map(crossroad -> modelMapper.map(crossroad, CrossroadDto.class)).toList();
+		List<NodeDto> data = cs.getAllCrossroads().stream()
+				.map(crossroad -> modelMapper.map(crossroad, NodeDto.class)).toList();
 		MapOverlayGeoJson mogj = new MapOverlayGeoJson(data);
 
 		if (data.isEmpty())
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Crossroad have been defined");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Nodes have been defined");
 
 		return mogj;
 

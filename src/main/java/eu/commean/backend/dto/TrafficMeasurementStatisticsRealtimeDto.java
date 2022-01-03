@@ -34,6 +34,7 @@ public class TrafficMeasurementStatisticsRealtimeDto {
 		this.tcnId =trafficCameraNodeId;
 		this.currentCars = currentCars;
 		this.currentTrucks = currentTrucks;
+		this.averageTimeInPicture = averageTimeInPicture;
 		this.trafficSituation = calcTrafficSituation();
 	}
 
