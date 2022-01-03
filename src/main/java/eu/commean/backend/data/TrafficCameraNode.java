@@ -13,7 +13,6 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringExclude;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.data.geo.Point;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

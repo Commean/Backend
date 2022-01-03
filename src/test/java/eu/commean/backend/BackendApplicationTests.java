@@ -6,9 +6,7 @@ import static org.junit.Assert.assertNull;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,10 +16,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.postgresql.util.PGTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;

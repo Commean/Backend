@@ -8,7 +8,6 @@ import ch.cordsen.geojson.annotation.GeoJson;
 import ch.cordsen.geojson.annotation.GeoJsonFeatures;
 import ch.cordsen.geojson.serializer.GeoJsonSerializer;
 import ch.cordsen.geojson.serializer.GeoJsonType;
-import eu.commean.backend.data.Crossroad;
 import lombok.Data;
 
 @GeoJson(type = GeoJsonType.FEATURE_COLLECTION)
@@ -17,7 +16,7 @@ import lombok.Data;
 public class MapOverlayGeoJson {
 	
 	
-	public MapOverlayGeoJson(List<CrossroadDto> crossroads) {
+	public MapOverlayGeoJson(List<NodeDto> crossroads) {
 		this.crossroads = crossroads;
 	}
 
@@ -27,6 +26,6 @@ public class MapOverlayGeoJson {
 	}
 
 	@GeoJsonFeatures
-	private List<CrossroadDto> crossroads;
+	private List<NodeDto> crossroads;
 
 }

@@ -1,7 +1,6 @@
 package eu.commean.backend.data;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +20,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - make_interval(0,0,0,:days) AND trafficcameranode_id = :id", resultClass = TrafficMeasurement.class)
-@NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > NOW() - MAKE_INTERVAL(0,0,0,0,0,1) AND id = :id ORDER BY tm.timestamp DESC LIMIT 1",resultClass = TrafficMeasurement.class)
+@NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE trafficcameranode_id = :id ORDER BY tm.timestamp DESC LIMIT 1",resultClass = TrafficMeasurement.class)
 
 //TODO Implement function to convert PostgreSQL Table to Hypertable from TimeScaleDB on first start
 public class TrafficMeasurement {
