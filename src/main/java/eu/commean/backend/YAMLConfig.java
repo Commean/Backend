@@ -11,9 +11,7 @@ import lombok.Data;
 @ConfigurationProperties
 @Data
 public class YAMLConfig {
- 
-    private String corsserver;
 
-    // standard getters and setters
+	private String corsserver;
 
-}	
+}

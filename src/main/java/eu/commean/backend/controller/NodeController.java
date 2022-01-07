@@ -5,15 +5,15 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import eu.commean.backend.dto.NodeDto;
 import eu.commean.backend.dto.MapOverlayGeoJson;
+import eu.commean.backend.dto.NodeDto;
 import eu.commean.backend.service.CrossroadService;
 
 @RestController
@@ -25,13 +25,12 @@ public class NodeController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-
-	@GetMapping(value = "")
+	@GetMapping(value = "/geojson")
 	@ResponseStatus(code = HttpStatus.OK)
-	public Object getAllCrossroads() {
+	public Object getAllNodes() {
 
-		List<NodeDto> data = cs.getAllCrossroads().stream()
-				.map(crossroad -> modelMapper.map(crossroad, NodeDto.class)).toList();
+		List<NodeDto> data = cs.getAllCrossroads().stream().map(crossroad -> modelMapper.map(crossroad, NodeDto.class))
+				.toList();
 		MapOverlayGeoJson mogj = new MapOverlayGeoJson(data);
 
 		if (data.isEmpty())
@@ -41,4 +40,11 @@ public class NodeController {
 
 	}
 
+	// TODO Make Endpoint: Get Node
+	@GetMapping(value = "")
+	@ResponseStatus(code = HttpStatus.OK)
+	public Object getNode(@RequestParam("id") String uuid) {
+		return null;
+	}
+	//TODO Make Endpoint: Register new Node
 }
