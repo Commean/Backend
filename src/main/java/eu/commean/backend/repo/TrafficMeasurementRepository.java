@@ -1,6 +1,7 @@
 package eu.commean.backend.repo;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -16,11 +17,17 @@ public interface TrafficMeasurementRepository extends CrudRepository<TrafficMeas
 	Iterable<TrafficMeasurement> findAllByTrafficCameraNode(TrafficCameraNode tcn);
 
 	@Transactional
-	Iterable<TrafficMeasurement> findAllByTimespan(@Param(value = "id") int id, @Param(value = "days") int days);
+	Iterable<TrafficMeasurement> findAllByTimespan(@Param(value = "id") UUID uuid, @Param(value = "days") int days);
 	Optional<TrafficMeasurement> findLatestById(@Param(value="id") int id);
 	@Transactional
 	@Modifying
 	@Query(value = "SELECT public.create_hypertable(?1,?2)", nativeQuery = true)
 	void createHypertable(String tableName, String timeColumn);
+
+	void deleteById(UUID id);
+
+	Optional<TrafficMeasurement> findLatestById(UUID id);
+
+	Optional<TrafficMeasurement> findById(UUID id);
 
 }

@@ -1,6 +1,7 @@
 package eu.commean.backend.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -36,7 +37,7 @@ public class CrossroadServiceImpl implements CrossroadService {
 
 	@Override
 	@Transactional
-	public Crossroad getCrossroadById(int id) {
+	public Crossroad getCrossroadById(UUID id) {
 		return crossroadRepository.findById(id).orElse(null);
 	}
 
@@ -47,7 +48,7 @@ public class CrossroadServiceImpl implements CrossroadService {
 	}
 
 	@Override
-	public void deleteCrossroadById(int id) {
+	public void deleteCrossroadById(UUID id) {
 		crossroadRepository.deleteById(id);
 
 	}

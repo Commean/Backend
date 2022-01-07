@@ -1,12 +1,14 @@
 package eu.commean.backend.dto;
 
+import java.util.UUID;
+
 import eu.commean.backend.data.TrafficMeasurement;
 import eu.commean.backend.enums.TrafficSituation;
 import lombok.Data;
 
 @Data
 public class TrafficMeasurementStatisticsRealtimeDto {
-	private int tcnId;
+	private UUID tcnId;
 	private int currentCars;
 	private int currentTrucks;
 	private int averageTimeInPicture;
@@ -29,7 +31,7 @@ public class TrafficMeasurementStatisticsRealtimeDto {
 
 	}
 
-	public TrafficMeasurementStatisticsRealtimeDto(int trafficCameraNodeId,int currentCars, int currentTrucks, int averageTimeInPicture) {
+	public TrafficMeasurementStatisticsRealtimeDto(UUID trafficCameraNodeId,int currentCars, int currentTrucks, int averageTimeInPicture) {
 		super();
 		this.tcnId =trafficCameraNodeId;
 		this.currentCars = currentCars;
@@ -39,7 +41,7 @@ public class TrafficMeasurementStatisticsRealtimeDto {
 	}
 
 	static public TrafficMeasurementStatisticsRealtimeDto convertToDto(TrafficMeasurement tm) {
-		return new TrafficMeasurementStatisticsRealtimeDto(tm.getTrafficCameraNode().getId(),tm.getCarIn(), tm.getTruckIn(),
+		return new TrafficMeasurementStatisticsRealtimeDto(tm.getTrafficCameraNode().getId(),tm.getCars(), tm.getTrucks	(),
 				tm.getAverageTimeInPicture());
 
 	}

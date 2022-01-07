@@ -1,6 +1,7 @@
 package eu.commean.backend.data;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringExclude;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import lombok.AllArgsConstructor;
@@ -30,8 +32,9 @@ import lombok.ToString;
 @EnableAutoConfiguration
 public class TrafficCameraNode {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
+	private UUID id;
 	@NonNull
 	private String location;
 	@NonNull
@@ -46,10 +49,10 @@ public class TrafficCameraNode {
 
 	@Override
 	public int hashCode() {
-		return id * location.hashCode();
+		return id.hashCode() * location.hashCode();
 	}
 
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
@@ -65,7 +68,7 @@ public class TrafficCameraNode {
 		return trafficMeasurement;
 	}
 
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

@@ -1,6 +1,7 @@
 package eu.commean.backend.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import eu.commean.backend.data.TrafficCameraNode;
 import eu.commean.backend.data.TrafficMeasurement;
@@ -11,16 +12,15 @@ public interface TrafficMeasurementService {
 
 	List<TrafficMeasurement> getAllTrafficMeasurements();
 
-	TrafficMeasurement getTrafficMeasurementById(int id);
+	TrafficMeasurement getTrafficMeasurementById(UUID id);
 
 	List<TrafficMeasurement> getMeasurementsByTrafficCameraNode(TrafficCameraNode tcn);
 
-	List<TrafficMeasurement> getAllMeasrumentsFromTimespan(int id,int days);
+	List<TrafficMeasurement> getAllMeasrumentsFromTimespan(UUID id,int days);
 	
-	TrafficMeasurement getLatestMeasurementFromId(int id);
+	TrafficMeasurement getLatestMeasurementFromId(UUID id);
 
-	void deleteTrafficMeasurementById(int id);
+	void deleteTrafficMeasurementById(UUID id);
 
 	void createHypertable();
-
 }

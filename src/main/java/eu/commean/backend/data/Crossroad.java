@@ -1,6 +1,7 @@
 package eu.commean.backend.data;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringExclude;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import lombok.AllArgsConstructor;
@@ -31,9 +33,9 @@ import lombok.ToString;
 public class Crossroad {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-
-	private Integer id;
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
+	private UUID id;
 
 	@NonNull
 	String crossroadName;
@@ -47,10 +49,10 @@ public class Crossroad {
 
 	@Override
 	public int hashCode() {
-		return id * crossroadName.hashCode() * crossroadLocation.hashCode();
+		return id.hashCode() * crossroadName.hashCode() * crossroadLocation.hashCode();
 	}
 
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
@@ -66,7 +68,7 @@ public class Crossroad {
 		return trafficCameraNode;
 	}
 
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

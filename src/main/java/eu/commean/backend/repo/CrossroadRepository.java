@@ -1,6 +1,8 @@
 package eu.commean.backend.repo;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -19,5 +21,9 @@ public interface CrossroadRepository extends CrudRepository<Crossroad, Integer> 
 	@Transactional
 	@EntityGraph(attributePaths = { "trafficCameraNode" })
 	List<Crossroad> findAll();
+
+	Optional<Crossroad> findById(UUID id);
+
+	void deleteById(UUID id);
 
 }

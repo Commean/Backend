@@ -1,6 +1,7 @@
 package eu.commean.backend.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -32,7 +33,7 @@ public class TrafficMeasurementServiceImpl implements TrafficMeasurementService 
 	}
 
 	@Override
-	public TrafficMeasurement getTrafficMeasurementById(int id) {
+	public TrafficMeasurement getTrafficMeasurementById(UUID id) {
 
 		return trafficMeasurementRepository.findById(id).orElse(null);
 	}
@@ -46,7 +47,7 @@ public class TrafficMeasurementServiceImpl implements TrafficMeasurementService 
 
 
 	@Override
-	public void deleteTrafficMeasurementById(int id) {
+	public void deleteTrafficMeasurementById(UUID id) {
 		trafficMeasurementRepository.deleteById(id);
 
 	}
@@ -59,14 +60,14 @@ public class TrafficMeasurementServiceImpl implements TrafficMeasurementService 
 
 	@Override
 	@Transactional
-	//TODO implement querry to select by timespan
-	public List<TrafficMeasurement> getAllMeasrumentsFromTimespan(int tcnId, int days) {
-		return (List<TrafficMeasurement>) trafficMeasurementRepository.findAllByTimespan(tcnId, days);
+	public List<TrafficMeasurement> getAllMeasrumentsFromTimespan(UUID id, int days) {
+		return (List<TrafficMeasurement>) trafficMeasurementRepository.findAllByTimespan(id, days);
 	}
 
 	@Override
-	public TrafficMeasurement getLatestMeasurementFromId(int id) {
+	public TrafficMeasurement getLatestMeasurementFromId(UUID id) {
 		return trafficMeasurementRepository.findLatestById(id).orElse(null);
 	}
+
 
 }

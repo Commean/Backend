@@ -1,6 +1,7 @@
 package eu.commean.backend.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -34,7 +35,7 @@ public class TrafficCameraNodeServiceImpl implements TrafficCameraNodeService {
 
 	@Override
 	@Transactional
-	public TrafficCameraNode getTrafficCameraNodeById(int id) {
+	public TrafficCameraNode getTrafficCameraNodeById(UUID id) {
 		return cameraNodeRepository.findById(id).orElse(null);
 	}
 
@@ -45,7 +46,7 @@ public class TrafficCameraNodeServiceImpl implements TrafficCameraNodeService {
 	}
 
 	@Override
-	public void deleteTrafficCameraNodeById(int id) {
+	public void deleteTrafficCameraNodeById(UUID id) {
 		cameraNodeRepository.deleteById(id);
 
 	}
