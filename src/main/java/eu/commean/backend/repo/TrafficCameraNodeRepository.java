@@ -1,17 +1,11 @@
 package eu.commean.backend.repo;
 
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.data.repository.CrudRepository;
-
 import eu.commean.backend.data.Crossroad;
 import eu.commean.backend.data.TrafficCameraNode;
+import org.springframework.data.repository.CrudRepository;
 
-public interface TrafficCameraNodeRepository extends CrudRepository<TrafficCameraNode, Integer> {
+import java.util.UUID;
+
+public interface TrafficCameraNodeRepository extends CrudRepository<TrafficCameraNode, UUID> {
 	Iterable<TrafficCameraNode> findByCrossroad(Crossroad crossroad);
-
-	Optional<TrafficCameraNode> findById(UUID id);
-
-	void deleteById(UUID id);
 }

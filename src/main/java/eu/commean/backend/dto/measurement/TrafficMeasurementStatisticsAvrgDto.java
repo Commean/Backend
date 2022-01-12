@@ -1,8 +1,8 @@
-package eu.commean.backend.dto;
-
-import java.time.Instant;
+package eu.commean.backend.dto.measurement;
 
 import lombok.Data;
+
+import java.time.Instant;
 
 @Data
 public class TrafficMeasurementStatisticsAvrgDto {
@@ -11,7 +11,7 @@ public class TrafficMeasurementStatisticsAvrgDto {
 	private int averageTrucks;
 	private int averageWaitTime;
 
-	private Instant TrafficPeakTime;
-	private int TrafficPeakVehicles;
+	private Instant trafficPeakTime;
+	private int trafficPeakVehicles;
 
 }

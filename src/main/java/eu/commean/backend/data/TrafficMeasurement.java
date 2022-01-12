@@ -1,22 +1,15 @@
 package eu.commean.backend.data;
 
-import java.sql.Timestamp;
-import java.util.UUID;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQuery;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.postgresql.util.PGTimestamp;
-
+import eu.commean.backend.dto.measurement.CreateTrafficMeasurement;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.annotations.GenericGenerator;
+import org.postgresql.util.PGTimestamp;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -46,14 +39,22 @@ public class TrafficMeasurement {
 	@JoinColumn(name = "trafficcameranode_id", referencedColumnName = "id")
 	private TrafficCameraNode trafficCameraNode;
 
-	public TrafficMeasurement(int trucks, int cars, int averageTimeInPicture, @NonNull Timestamp timestamp,
-			@NonNull TrafficCameraNode trafficCameraNode) {
+	public TrafficMeasurement(int trucks, int cars, int averageTimeInPicture, Timestamp timestamp,
+							  TrafficCameraNode trafficCameraNode) {
 		super();
 		this.trucks = trucks;
 		this.cars = cars;
 		this.averageTimeInPicture = averageTimeInPicture;
 		this.timestamp = timestamp;
 		this.trafficCameraNode = trafficCameraNode;
+	}
+
+	public TrafficMeasurement(CreateTrafficMeasurement trafficMeasurement) {
+
+		this.averageTimeInPicture = trafficMeasurement.getAverageTimeInPicture();
+		this.cars = trafficMeasurement.getCars();
+		this.trucks = trafficMeasurement.getTrucks();
+		this.timestamp = trafficMeasurement.getTimestamp();
 	}
 
 	@Override
@@ -65,44 +66,44 @@ public class TrafficMeasurement {
 		return id;
 	}
 
-	public int getTrucks() {
-		return trucks;
-	}
-
-	public int getCars() {
-		return cars;
-	}
-
-	public int getAverageTimeInPicture() {
-		return averageTimeInPicture;
-	}
-
-	public Timestamp getTimestamp() {
-		return timestamp;
-	}
-
-	public TrafficCameraNode getTrafficCameraNode() {
-		return trafficCameraNode;
-	}
-
 	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	public int getTrucks() {
+		return trucks;
 	}
 
 	public void setTrucks(int trucks) {
 		this.trucks = trucks;
 	}
 
+	public int getCars() {
+		return cars;
+	}
+
 	public void setCars(int cars) {
 		this.cars = cars;
+	}
+
+	public int getAverageTimeInPicture() {
+		return averageTimeInPicture;
 	}
 
 	public void setAverageTimeInPicture(int averageTimeInPicture) {
 		this.averageTimeInPicture = averageTimeInPicture;
 	}
 
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
 	public void setTimestamp(PGTimestamp timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public TrafficCameraNode getTrafficCameraNode() {
+		return trafficCameraNode;
 	}
 
 	public void setTrafficCameraNode(TrafficCameraNode trafficCameraNode) {

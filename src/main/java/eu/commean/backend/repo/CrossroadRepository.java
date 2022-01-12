@@ -1,29 +1,22 @@
 package eu.commean.backend.repo;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import javax.transaction.Transactional;
-
+import eu.commean.backend.data.Crossroad;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import eu.commean.backend.data.Crossroad;
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface CrossroadRepository extends CrudRepository<Crossroad, Integer> {
+public interface CrossroadRepository extends CrudRepository<Crossroad, UUID> {
 
 	List<Crossroad> findByCrossroadName(String crossroadName);
 
 	@Override
 	@Transactional
-	@EntityGraph(attributePaths = { "trafficCameraNode" })
+	@EntityGraph(attributePaths = {"trafficCameraNode"})
 	List<Crossroad> findAll();
-
-	Optional<Crossroad> findById(UUID id);
-
-	void deleteById(UUID id);
 
 }
