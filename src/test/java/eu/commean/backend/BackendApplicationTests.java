@@ -1,44 +1,18 @@
 package eu.commean.backend;
 
-import eu.commean.backend.data.Crossroad;
-import eu.commean.backend.data.TrafficCameraNode;
-import eu.commean.backend.data.TrafficMeasurement;
-import eu.commean.backend.repo.CrossroadRepository;
-import eu.commean.backend.repo.TrafficCameraNodeRepository;
-import eu.commean.backend.repo.TrafficMeasurementRepository;
-import eu.commean.backend.service.CrossroadService;
-import eu.commean.backend.service.TrafficCameraNodeService;
-import eu.commean.backend.service.TrafficMeasurementServiceImpl;
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.Hibernate;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.postgresql.util.PGTimestamp;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @Log4j2
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @TestInstance(Lifecycle.PER_CLASS)
 class BackendApplicationTests {
-
+/*
 	// Setup Spring Data
 	@Autowired
 	private TrafficCameraNodeRepository tcnRepo;
@@ -73,7 +47,7 @@ class BackendApplicationTests {
 
 	}
 
-	@Test
+	/*@Test
 	@DisplayName("Communication with TimeScaleDB")
 	void TestTimeScaleDB() {
 		Crossroad cr = crRepo.findById(UUID.fromString("f00c0dca-2fe2-4d46-96f5-627d7e2069e1")).orElse(null);
@@ -90,9 +64,9 @@ class BackendApplicationTests {
 		log.debug("CrossradID: {}, TrafficCammeraID: {}, tcn crossroad: {},tm time: {}, tm tcn id: {}", cr.getId(),
 				tcn.getId(), tcn.getCrossroad().getCrossroadName(), tm.getTimestamp().toString(),
 				tm.getTrafficCameraNode().getId());
-	}
+	}*/
 
-	@Test
+	/*@Test
 	@DisplayName("JPA Services")
 	void TestServicesForDB() {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
@@ -128,15 +102,16 @@ class BackendApplicationTests {
 		//assertNull(tcns.getTrafficCameraNodeById(2));
 		//assertNull(cs.getCrossroadById(2));
 
-	}
+	}*/
 
-	@Test
+	/*@Test
 	@DisplayName("Interval Statements")
 	void TestIntervalQuerries() {
 		TrafficCameraNode tcn = tcns.getTrafficCameraNodeById(UUID.fromString("9291e72b-cf32-4728-978b-c054ee3843c1"));
 		TrafficMeasurement tm = tms.getAllMeasrumentsFromTimespan(tcn.getId(), 1).get(0);
 		log.info("Mesurement: {}|{}|{}|{}", tm.getId(), tm.getCars(), tm.getTrucks(), tm.getAverageTimeInPicture());
 		assertNotNull(tm);
-	}
+	}*/
+
 
 }
