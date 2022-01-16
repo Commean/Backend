@@ -17,7 +17,7 @@ public class MapOverlayGeoJson {
 
 
 	@GeoJsonFeatures
-	private List<NodeGeoJsonDto> trafficCameraNodes;
+	private List<NodeGeoJsonDto> nodes;
 
 	@Override
 	public String toString() {
@@ -25,7 +25,7 @@ public class MapOverlayGeoJson {
 	}
 
 	public MapOverlayGeoJson(List<NodeGeoJsonDto> trafficCameraNodes) {
-		this.trafficCameraNodes = trafficCameraNodes;
+		this.nodes = trafficCameraNodes;
 	}
 
 }

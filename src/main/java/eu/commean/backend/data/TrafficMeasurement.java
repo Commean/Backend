@@ -1,6 +1,6 @@
 package eu.commean.backend.data;
 
-import eu.commean.backend.dto.measurement.CreateTrafficMeasurement;
+import eu.commean.backend.dto.measurement.CreateTrafficMeasurementDto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -49,7 +49,7 @@ public class TrafficMeasurement {
 		this.trafficCameraNode = trafficCameraNode;
 	}
 
-	public TrafficMeasurement(CreateTrafficMeasurement trafficMeasurement) {
+	public TrafficMeasurement(CreateTrafficMeasurementDto trafficMeasurement) {
 
 		this.averageTimeInPicture = trafficMeasurement.getAverageTimeInPicture();
 		this.cars = trafficMeasurement.getCars();

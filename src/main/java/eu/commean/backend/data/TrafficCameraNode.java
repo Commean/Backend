@@ -17,6 +17,7 @@ import java.util.UUID;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedNativeQuery(name = "TrafficCameraNode.findAllWhereLocationNotNull", query = "SELECT * FROM nodes n WHERE n.\"location\" NOTNULL;", resultClass = TrafficCameraNode.class)
 @EnableAutoConfiguration
 public class TrafficCameraNode {
 	@Id

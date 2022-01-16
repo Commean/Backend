@@ -2,7 +2,7 @@ package eu.commean.backend.controller;
 
 import eu.commean.backend.data.TrafficCameraNode;
 import eu.commean.backend.data.TrafficMeasurement;
-import eu.commean.backend.dto.measurement.CreateTrafficMeasurement;
+import eu.commean.backend.dto.measurement.CreateTrafficMeasurementDto;
 import eu.commean.backend.dto.measurement.TrafficMeasurementStatisticsRealtimeDto;
 import eu.commean.backend.service.TrafficCameraNodeService;
 import eu.commean.backend.service.TrafficMeasurementService;
@@ -50,7 +50,7 @@ public class MeasurementController {
 	@PostMapping(path = "/{node}", consumes = "application/json")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public void createNewMeasurement(@PathVariable("node") String id,
-									 @RequestBody CreateTrafficMeasurement trafficMeasurement) {
+									 @RequestBody CreateTrafficMeasurementDto trafficMeasurement) {
 		UUID uuid;
 		if (id.matches("^[a-fA-F\\d]{8}(?:\\-[a-fA-F\\d]{4}){3}\\-[a-fA-F\\d]{12}$"))
 			uuid = UUID.fromString(id);

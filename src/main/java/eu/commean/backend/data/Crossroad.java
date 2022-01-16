@@ -11,6 +11,9 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "crossroads")
+@NamedQueries({
+		@NamedQuery(name = "Crossroad.existsByTrafficCameraNode_Id", query = "select (count(c) > 0) from Crossroad c left join c.trafficCameraNode trafficCameraNode where trafficCameraNode.id = :id")
+})
 
 @ToString
 @NoArgsConstructor

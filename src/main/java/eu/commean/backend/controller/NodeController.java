@@ -5,6 +5,7 @@ import eu.commean.backend.dto.MapOverlayGeoJson;
 import eu.commean.backend.dto.node.CreateNodeDto;
 import eu.commean.backend.dto.node.NodeDto;
 import eu.commean.backend.dto.node.NodeGeoJsonDto;
+import eu.commean.backend.service.ApiKeyService;
 import eu.commean.backend.service.CrossroadService;
 import eu.commean.backend.service.TrafficCameraNodeService;
 import lombok.extern.log4j.Log4j2;
@@ -29,19 +30,21 @@ public class NodeController {
 	private TrafficCameraNodeService tcns;
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired
+	private ApiKeyService apiKeyService;
 
 	@GetMapping(value = "/geojson", produces = "application/json")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Object getAllNodes() {
 
-		List<NodeGeoJsonDto> data = tcns.getAllTrafficCameraNodes().stream()
-				.map(crossroad -> modelMapper.map(crossroad, NodeGeoJsonDto.class)).toList();
-		MapOverlayGeoJson mogj = new MapOverlayGeoJson(data);
+		List<NodeGeoJsonDto> data = tcns.getAllTrafficCameraNodesWhereLocatioNotNull().stream()
+				.map(node -> modelMapper.map(node, NodeGeoJsonDto.class)).toList();
+		MapOverlayGeoJson mapOverlayGeoJson = new MapOverlayGeoJson(data);
 
 		if (data.isEmpty())
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Nodes have been defined");
 
-		return mogj;
+		return mapOverlayGeoJson;
 
 	}
 
@@ -52,14 +55,14 @@ public class NodeController {
 	}
 
 	// TODO: Implement Registration-Key and generation of API-Key
-	@PostMapping(value = "", consumes = "application/json", produces = "text/text")
+	@PostMapping(value = "", consumes = "application/json")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String createNode(@RequestBody CreateNodeDto nodeToCreate) {
 		log.debug("CreateNodeDto| Id: {}, RegKey: {}", nodeToCreate.getId(), nodeToCreate.getRegistrationKey());
 		tcns.addTrafficCameraNode(new TrafficCameraNode(nodeToCreate.getId()));
 
 		log.debug("NodeOnDB: {}", tcns.getTrafficCameraNodeById(nodeToCreate.getId()).getId());
-		return "apiKeyGoesHere";
+		return apiKeyService.generateApiKey().getKey();
 
 	}
 
