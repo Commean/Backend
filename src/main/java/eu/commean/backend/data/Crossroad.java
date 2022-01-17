@@ -1,93 +1,78 @@
 package eu.commean.backend.data;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
+import lombok.*;
 import org.apache.commons.lang3.builder.ToStringExclude;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.data.geo.Point;
 
-import ch.cordsen.geojson.annotation.GeoJson;
-import ch.cordsen.geojson.annotation.GeoJsonGeometry;
-import ch.cordsen.geojson.annotation.GeoJsonId;
-import ch.cordsen.geojson.annotation.GeoJsonProperties;
-import ch.cordsen.geojson.serializer.GeoJsonType;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import javax.persistence.*;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "crossroads")
+@NamedQueries({
+		@NamedQuery(name = "Crossroad.existsByTrafficCameraNode_Id", query = "select (count(c) > 0) from Crossroad c left join c.trafficCameraNode trafficCameraNode where trafficCameraNode.id = :id")
+})
 
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EnableAutoConfiguration
-@GeoJson(type = GeoJsonType.FEATURE)
+
 public class Crossroad {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@GeoJsonId
-	private Integer id;
 	@NonNull
-	@GeoJsonProperties
 	String crossroadName;
+	@Id
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
+	private UUID id;
 	@NonNull
-	@GeoJsonGeometry
-	private Point crossroadLocation;
+	private String crossroadLocation;
 
 	@ToStringExclude
-	@OneToMany(mappedBy = "crossroad",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "crossroad", cascade = CascadeType.ALL)
 	private List<TrafficCameraNode> trafficCameraNode;
+
+	public Crossroad(UUID id, @NonNull String crossroadName, @NonNull String crossroadLocation) {
+		this.id = id;
+		this.crossroadName = crossroadName;
+		this.crossroadLocation = crossroadLocation;
+	}
 
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return id * crossroadName.hashCode() * crossroadLocation.hashCode();
+		return id.hashCode() * crossroadName.hashCode() * crossroadLocation.hashCode();
 	}
 
-	public Integer getId() {
+	public UUID getId() {
 		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
 	public String getCrossroadName() {
 		return crossroadName;
 	}
 
-	public Point getCrossroadLocation() {
-		return crossroadLocation;
-	}
-	
-
-	public List<TrafficCameraNode> getTrafficCameraNode() {
-		return trafficCameraNode;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public void setCrossroadName(String crossroadName) {
 		this.crossroadName = crossroadName;
 	}
 
-	public void setCrossroadLocation(Point crossroadLocation) {
+	public String getCrossroadLocation() {
+		return crossroadLocation;
+	}
+
+	public void setCrossroadLocation(String crossroadLocation) {
 		this.crossroadLocation = crossroadLocation;
+	}
+
+	public List<TrafficCameraNode> getTrafficCameraNode() {
+		return trafficCameraNode;
 	}
 
 	public void setTrafficCameraNode(List<TrafficCameraNode> trafficCameraNode) {

@@ -1,14 +1,14 @@
 package eu.commean.backend.service;
 
-import java.util.List;
-
-import javax.transaction.Transactional;
-
+import eu.commean.backend.data.Crossroad;
+import eu.commean.backend.repo.CrossroadRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.commean.backend.data.Crossroad;
-import eu.commean.backend.repo.CrossroadRepository;
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CrossroadServiceImpl implements CrossroadService {
@@ -28,27 +28,32 @@ public class CrossroadServiceImpl implements CrossroadService {
 	@Override
 	@Transactional
 	public List<Crossroad> getAllCrossroads() {
-		return (List<Crossroad>) crossroadRepository.findAll();
-	}
-
-	@Override
-	@Transactional
-	public Crossroad getCrossroadById(int id) {
-		Crossroad c = crossroadRepository.findById(id).orElse(null);
+		List<Crossroad> c = crossroadRepository.findAll();
+		Hibernate.initialize(c);
 		return c;
 	}
 
 	@Override
 	@Transactional
-	public List<Crossroad> getCrossroadByCrossroadName(String name) {
-		List<Crossroad> crossroads = crossroadRepository.findByCrossroadName(name);
-		return crossroads;
+	public Crossroad getCrossroadById(UUID id) {
+		return crossroadRepository.findById(id).orElse(null);
 	}
 
 	@Override
-	public void deleteCrossroadById(int id) {
+	@Transactional
+	public List<Crossroad> getCrossroadByCrossroadName(String name) {
+		return crossroadRepository.findByCrossroadName(name);
+	}
+
+	@Override
+	public void deleteCrossroadById(UUID id) {
 		crossroadRepository.deleteById(id);
 
+	}
+
+	@Override
+	public List<Crossroad> getAllCrossroadsLazy() {
+		return crossroadRepository.findAll();
 	}
 
 }

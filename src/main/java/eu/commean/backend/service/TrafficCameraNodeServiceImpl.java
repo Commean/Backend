@@ -1,15 +1,14 @@
 package eu.commean.backend.service;
 
-import java.util.List;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import eu.commean.backend.data.Crossroad;
 import eu.commean.backend.data.TrafficCameraNode;
 import eu.commean.backend.repo.TrafficCameraNodeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TrafficCameraNodeServiceImpl implements TrafficCameraNodeService {
@@ -34,7 +33,7 @@ public class TrafficCameraNodeServiceImpl implements TrafficCameraNodeService {
 
 	@Override
 	@Transactional
-	public TrafficCameraNode getTrafficCameraNodeById(int id) {
+	public TrafficCameraNode getTrafficCameraNodeById(UUID id) {
 		return cameraNodeRepository.findById(id).orElse(null);
 	}
 
@@ -45,7 +44,12 @@ public class TrafficCameraNodeServiceImpl implements TrafficCameraNodeService {
 	}
 
 	@Override
-	public void deleteTrafficCameraNodeById(int id) {
+	public List<TrafficCameraNode> getAllTrafficCameraNodesWhereLocatioNotNull() {
+		return (List<TrafficCameraNode>) cameraNodeRepository.findAllWhereLocationNotNull();
+	}
+
+	@Override
+	public void deleteTrafficCameraNodeById(UUID id) {
 		cameraNodeRepository.deleteById(id);
 
 	}
