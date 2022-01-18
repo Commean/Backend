@@ -6,4 +6,4 @@ if(!(Test-Path $pathToAppYML -PathType Leaf)) {
     throw "$pathToAppYML is missing!"
 }
 
-mvn --file $repoRoot package
+mvn $mavenCLIOptions --file $repoRoot package

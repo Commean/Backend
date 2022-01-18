@@ -1,0 +1,37 @@
+image: maven:3.8.4-openjdk-17
+
+stages:
+  - build
+  - test
+  - package
+  - deploy
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+build:
+  stage: build
+  script:
+    - echo "Maven build started"
+    - scripts/0_build.sh
+
+test:
+  stage: test
+  script:
+    - echo "Maven build started"
+    - scripts/1_test.sh
+
+package:
+  stage: package
+  script:
+    - echo "Maven build started"
+    - scripts/2_package.sh
+  artifacts:
+    name: "app-snapshot"
+    paths:
+      - target/*.jar
