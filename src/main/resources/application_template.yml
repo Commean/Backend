@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/commean_dev
+    url: jdbc:postgresql://localhost:5432/<DATABASE_NAME> # Defined in db\secrets.env (POSTGRES_DB)
     driver-class-name: org.postgresql.Driver
-    username: <CHANGE_ME>
-    password: <CHANGE_ME>
+    username: <CHANGE_ME> # POSTGRES_USER
+    password: <CHANGE_ME> # POSTGRES_PASSWORD
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
