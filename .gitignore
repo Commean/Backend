@@ -121,3 +121,7 @@ local.properties
 src/main/resources/application.yml
 .gitsecret/keys/random_seed
 !*.secret
+
+# Database stuff
+db/db-data
+secrets.env
