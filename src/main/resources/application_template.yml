@@ -9,8 +9,5 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create
-  logging:
-    level:
-      '[eu.commean.backend.BackendApplicationTests]': debug
 
-#corsserver: http://localhost:8081/
+corsserver: http://<YOUR_DOMAIN>:<YOUR_PORT>/ # For frontend 
