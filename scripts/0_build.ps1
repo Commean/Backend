@@ -1,4 +1,4 @@
 . $PSScriptRoot\common.ps1
 
 Check-For-App-YML
-mvn $mavenCLIOptions package
+mvn $mavenCLIOptions compile
