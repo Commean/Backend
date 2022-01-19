@@ -8,6 +8,9 @@ stages:
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  POSTGRES_DB: "commean_dev"
+  POSTGRES_USER: $POSTGRES_USER
+  POSTGRES_PASSWORD: $POSTGRES_PASSWORD
 
 cache:
   paths:

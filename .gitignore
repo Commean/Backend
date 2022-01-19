@@ -118,7 +118,6 @@ local.properties
 #.project
 
 # passwordfiles temporary!!!
-src/main/resources/application.yml
 .gitsecret/keys/random_seed
 !*.secret
 
