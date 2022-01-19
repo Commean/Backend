@@ -11,6 +11,7 @@ variables:
   POSTGRES_DB: "commean_dev"
   POSTGRES_USER: $POSTGRES_USER
   POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+  POSTGRES_URL: "postgress"
 
 cache:
   paths:
@@ -25,8 +26,8 @@ build:
 
 test:
   stage: test
-  services:
-    - timescale/timescaledb:latest-pg12
+  - name: timescale/timescaledb:latest-pg12
+    alias: postgress
   script:
     - echo "Maven build started"
     - scripts/2_test.sh
