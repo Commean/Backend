@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
+@Deprecated
 public interface CrossroadRepository extends CrudRepository<Crossroad, UUID> {
 
 	List<Crossroad> findByCrossroadName(String crossroadName);
