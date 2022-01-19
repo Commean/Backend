@@ -25,9 +25,10 @@ build:
 
 test:
   stage: test
+  services:
+    - timescale/timescaledb:latest-pg12
   script:
     - echo "Maven build started"
-    - scripts/1_startDB.sh
     - scripts/2_test.sh
 
 package:
