@@ -29,10 +29,6 @@ test:
   services:
     - name: timescale/timescaledb:latest-pg12
       alias: postgress
-  variables:
-    POSTGRES_DB: $POSTGRES_DB
-    POSTGRES_USER: $POSTGRES_USER
-    POSTGRES_PASSWORD: $POSTGRES_PASSWORD
   script:
     - echo "Maven build started"
     - scripts/2_test.sh
