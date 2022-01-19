@@ -28,7 +28,7 @@ test:
   stage: test
   services:
     - name: timescale/timescaledb:latest-pg12
-      alias: postgress
+      alias: $POSTGRES_URL
   script:
     - echo "Maven build started"
     - scripts/2_test.sh
