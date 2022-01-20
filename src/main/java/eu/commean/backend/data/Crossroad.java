@@ -21,6 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @EnableAutoConfiguration
 
+@Deprecated
 public class Crossroad {
 
 	@NonNull

@@ -1,11 +1,26 @@
 package eu.commean.backend;
 
+import eu.commean.backend.data.Crossroad;
+import eu.commean.backend.data.TrafficCameraNode;
+import eu.commean.backend.repo.CrossroadRepository;
+import eu.commean.backend.repo.TrafficCameraNodeRepository;
+import eu.commean.backend.repo.TrafficMeasurementRepository;
+import eu.commean.backend.service.CrossroadService;
+import eu.commean.backend.service.TrafficCameraNodeService;
+import eu.commean.backend.service.TrafficMeasurementServiceImpl;
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Log4j2
 @ExtendWith(SpringExtension.class)
@@ -21,17 +36,20 @@ class BackendApplicationTests {
 	@Autowired
 	private TrafficMeasurementRepository tmRepo;
 	@Autowired
-	private CrossroadService cs;
+	private CrossroadService cs;*/
 	@Autowired
 	private TrafficCameraNodeService tcns;
-	@Autowired
-	private TrafficMeasurementServiceImpl tms;
+	/*@Autowired
+	private TrafficMeasurementServiceImpl tms;*/
 
 	@ExtendWith(SpringExtension.class)
 	@BeforeAll
 	void setup() {
 		// Add test data to Postgres
+		TrafficCameraNode trafficCameraNode = new TrafficCameraNode(UUID.fromString("f00c0dca-2fe2-4d46-96f5-627d7e2069e1"));
+        tcns.addTrafficCameraNode(trafficCameraNode);
 
+        /*
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
 		factory.createPoint(new Coordinate(14.2980086, 46.636018)); // LONG,LAT
 		Crossroad crossroadTest = new Crossroad(UUID.fromString("f00c0dca-2fe2-4d46-96f5-627d7e2069e1"), "TEST_01", "POINT(14.305524230003357 46.62442463652353)");
@@ -40,12 +58,17 @@ class BackendApplicationTests {
 				cameraNodeTest01);
 
 		// write data to Postgres
-		crRepo.save(crossroadTest);
 		tcnRepo.save(cameraNodeTest01);
 		tmRepo.save(trafficMeasurement01);
 //		tmRepo.createHypertable("traffic_measurement", "timestamp");
-
+         */
 	}
+
+    @Test
+    void checkCreatingOfCrossroad() {
+		TrafficCameraNode trafficCameraNode = tcns.getTrafficCameraNodeById(UUID.fromString("f00c0dca-2fe2-4d46-96f5-627d7e2069e1"));
+        assertNotNull(trafficCameraNode);
+    }
 
 	/*@Test
 	@DisplayName("Communication with TimeScaleDB")
