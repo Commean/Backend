@@ -14,15 +14,15 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - make_interval(0,0,0,:days) AND trafficcameranode_id = :id", resultClass = TrafficMeasurement.class)
-@NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE trafficcameranode_id = :id ORDER BY tm.timestamp DESC LIMIT 1", resultClass = TrafficMeasurement.class)
+@NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - make_interval(0,0,0,:days,:hours, :minutes,:seconds) AND trafficcameranode_id = :id", resultClass = TrafficMeasurement.class)
+@NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE trafficcameranode_id = :id ORDER BY tm.timestamp LIMIT 1", resultClass = TrafficMeasurement.class)
 
 //TODO Implement function to convert PostgreSQL Table to Hypertable from TimeScaleDB on first start
 public class TrafficMeasurement {
 
 	@Id
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
 	private UUID id;
 
 	private int trucks;
