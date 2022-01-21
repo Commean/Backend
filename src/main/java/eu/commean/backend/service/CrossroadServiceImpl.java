@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Deprecated
 public class CrossroadServiceImpl implements CrossroadService {
 
 	CrossroadRepository crossroadRepository;

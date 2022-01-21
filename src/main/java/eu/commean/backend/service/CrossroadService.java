@@ -1,10 +1,11 @@
 package eu.commean.backend.service;
 
+import eu.commean.backend.data.Crossroad;
+
 import java.util.List;
 import java.util.UUID;
 
-import eu.commean.backend.data.Crossroad;
-
+@Deprecated
 public interface CrossroadService {
 
 	Crossroad addCrossroad(Crossroad c);

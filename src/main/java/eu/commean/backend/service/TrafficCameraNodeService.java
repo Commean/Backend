@@ -13,7 +13,7 @@ public interface TrafficCameraNodeService {
 	List<TrafficCameraNode> getAllTrafficCameraNodes();
 
 	TrafficCameraNode getTrafficCameraNodeById(UUID id);
-
+	@Deprecated
 	List<TrafficCameraNode> getTrafficCameraNodesByCrossroad(Crossroad c);
 
 	List<TrafficCameraNode> getAllTrafficCameraNodesWhereLocatioNotNull();
