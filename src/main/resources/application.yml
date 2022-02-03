@@ -9,5 +9,11 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create
-
 corsserver: http://${FRONTEND_URL:localhost}:8081/
+
+logging:
+  level:
+    eu.commean.backend: DEBUG
+server:
+  error:
+    include-stacktrace: on_param
