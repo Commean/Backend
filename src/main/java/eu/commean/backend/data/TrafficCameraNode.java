@@ -25,51 +25,11 @@ public class TrafficCameraNode {
 	//@GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
 	private UUID id;
 	private String location;
-	@ManyToOne
-	@ToStringExclude
-	@JoinColumn(name = "crossroad_id", referencedColumnName = "id")
-	private Crossroad crossroad;
+	private String name;
 
 	@ToStringExclude
 	@OneToMany(mappedBy = "trafficCameraNode")
 	private List<TrafficMeasurement> trafficMeasurement;
-
-	@Override
-	public int hashCode() {
-		return id.hashCode() * location.hashCode();
-	}
-
-	public UUID getId() {
-		return id;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public Crossroad getCrossroad() {
-		return crossroad;
-	}
-
-	public List<TrafficMeasurement> getTrafficMeasurement() {
-		return trafficMeasurement;
-	}
-
-	public void setId(UUID id) {
-		this.id = id;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	public void setCrossroad(Crossroad crossroad) {
-		this.crossroad = crossroad;
-	}
-
-	public void setTrafficMeasurement(List<TrafficMeasurement> trafficMeasurement) {
-		this.trafficMeasurement = trafficMeasurement;
-	}
 
 	public TrafficCameraNode(UUID id) {
 		this.id = id;
@@ -82,5 +42,42 @@ public class TrafficCameraNode {
 	public TrafficCameraNode(UUID id, String location) {
 		this.id = id;
 		this.location = location;
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode() * location.hashCode() * name.hashCode();
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<TrafficMeasurement> getTrafficMeasurement() {
+		return trafficMeasurement;
+	}
+
+	public void setTrafficMeasurement(List<TrafficMeasurement> trafficMeasurement) {
+		this.trafficMeasurement = trafficMeasurement;
 	}
 }

@@ -1,9 +1,9 @@
 package eu.commean.backend.service;
 
-import eu.commean.backend.data.Crossroad;
 import eu.commean.backend.data.TrafficCameraNode;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface TrafficCameraNodeService {
@@ -13,8 +13,9 @@ public interface TrafficCameraNodeService {
 	List<TrafficCameraNode> getAllTrafficCameraNodes();
 
 	TrafficCameraNode getTrafficCameraNodeById(UUID id);
+
 	@Deprecated
-	List<TrafficCameraNode> getTrafficCameraNodesByCrossroad(Crossroad c);
+	Optional<TrafficCameraNode> getTrafficCameraNodesByName(String name);
 
 	List<TrafficCameraNode> getAllTrafficCameraNodesWhereLocatioNotNull();
 

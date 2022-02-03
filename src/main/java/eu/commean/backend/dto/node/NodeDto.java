@@ -15,12 +15,15 @@ import java.util.regex.Pattern;
 public class NodeDto {
 
 	private UUID id = new UUID(0, 0);
-	private UUID crossroadId = new UUID(0, 0);
+	private String name = "";
 	private double[] location = {0, 0};
+
+	public NodeDto(UUID id, double[] parseLocation) {
+	}
 
 	public static NodeDto convertToDto(TrafficCameraNode tcn) {
 
-		return new NodeDto(tcn.getId(), tcn.getCrossroad().getId(), parseLocation(tcn.getLocation()));
+		return new NodeDto(tcn.getId(), tcn.getName(), parseLocation(tcn.getLocation()));
 
 	}
 
