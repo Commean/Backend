@@ -1,6 +1,6 @@
 package eu.commean.backend.repo;
 
-import eu.commean.backend.data.TrafficCameraNode;
+import eu.commean.backend.entity.TrafficCameraNode;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

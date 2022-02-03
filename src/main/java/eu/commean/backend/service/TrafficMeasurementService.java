@@ -1,7 +1,7 @@
 package eu.commean.backend.service;
 
-import eu.commean.backend.data.TrafficCameraNode;
-import eu.commean.backend.data.TrafficMeasurement;
+import eu.commean.backend.entity.TrafficCameraNode;
+import eu.commean.backend.entity.TrafficMeasurement;
 
 import java.util.List;
 import java.util.UUID;

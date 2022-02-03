@@ -1,7 +1,7 @@
 package eu.commean.backend.service;
 
-import eu.commean.backend.data.TrafficCameraNode;
-import eu.commean.backend.data.TrafficMeasurement;
+import eu.commean.backend.entity.TrafficCameraNode;
+import eu.commean.backend.entity.TrafficMeasurement;
 import eu.commean.backend.repo.TrafficMeasurementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

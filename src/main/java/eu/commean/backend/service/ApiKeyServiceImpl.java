@@ -1,6 +1,6 @@
 package eu.commean.backend.service;
 
-import eu.commean.backend.data.ApiKey;
+import eu.commean.backend.entity.ApiKey;
 import eu.commean.backend.repo.ApiKeyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

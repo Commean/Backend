@@ -1,7 +1,7 @@
 package eu.commean.backend.controller;
 
-import eu.commean.backend.data.TrafficCameraNode;
-import eu.commean.backend.data.TrafficMeasurement;
+import eu.commean.backend.entity.TrafficCameraNode;
+import eu.commean.backend.entity.TrafficMeasurement;
 import eu.commean.backend.dto.measurement.CreateTrafficMeasurementDto;
 import eu.commean.backend.dto.measurement.TrafficMeasurementStatisticsRealtimeDto;
 import eu.commean.backend.service.TrafficCameraNodeService;

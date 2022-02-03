@@ -1,4 +1,4 @@
-package eu.commean.backend.data;
+package eu.commean.backend.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -35,13 +35,15 @@ public class TrafficCameraNode {
 		this.id = id;
 	}
 
-	public TrafficCameraNode(String location) {
-		this.location = location;
-	}
-
 	public TrafficCameraNode(UUID id, String location) {
 		this.id = id;
 		this.location = location;
+	}
+
+	public TrafficCameraNode(UUID id, String location, String name) {
+		this.id = id;
+		this.location = location;
+		this.name = name;
 	}
 
 	@Override

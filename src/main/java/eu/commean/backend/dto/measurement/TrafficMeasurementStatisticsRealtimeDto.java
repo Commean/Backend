@@ -1,6 +1,6 @@
 package eu.commean.backend.dto.measurement;
 
-import eu.commean.backend.data.TrafficMeasurement;
+import eu.commean.backend.entity.TrafficMeasurement;
 import eu.commean.backend.enums.TrafficSituation;
 import lombok.Data;
 

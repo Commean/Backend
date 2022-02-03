@@ -1,12 +1,13 @@
 package eu.commean.backend.controller;
 
-import eu.commean.backend.data.TrafficCameraNode;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import eu.commean.backend.entity.TrafficCameraNode;
 import eu.commean.backend.dto.MapOverlayGeoJson;
 import eu.commean.backend.dto.node.CreateNodeDto;
 import eu.commean.backend.dto.node.NodeDto;
 import eu.commean.backend.dto.node.NodeGeoJsonDto;
 import eu.commean.backend.service.ApiKeyService;
-import eu.commean.backend.service.CrossroadService;
 import eu.commean.backend.service.TrafficCameraNodeService;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -16,7 +17,9 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Log4j2
@@ -24,14 +27,16 @@ import java.util.UUID;
 @RequestMapping("/api/v1/nodes")
 public class NodeController {
 
-	@Autowired
-	private CrossroadService cs;
-	@Autowired
 	private TrafficCameraNodeService tcns;
-	@Autowired
 	private ModelMapper modelMapper;
-	@Autowired
 	private ApiKeyService apiKeyService;
+
+	@Autowired
+	public NodeController(TrafficCameraNodeService tcns, ModelMapper modelMapper, ApiKeyService apiKeyService) {
+		this.tcns = tcns;
+		this.modelMapper = modelMapper;
+		this.apiKeyService = apiKeyService;
+	}
 
 	@GetMapping(value = "/geojson", produces = "application/json")
 	@ResponseStatus(code = HttpStatus.OK)
@@ -57,13 +62,21 @@ public class NodeController {
 	// TODO: Implement Registration-Key and generation of API-Key
 	@PostMapping(value = "", consumes = "application/json")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public String createNode(@RequestBody CreateNodeDto nodeToCreate) {
+	public Map<String, String> createNode(@RequestBody CreateNodeDto nodeToCreate) {
 		log.debug("CreateNodeDto| Id: {}, RegKey: {}", nodeToCreate.getId(), nodeToCreate.getRegistrationKey());
 		tcns.addTrafficCameraNode(new TrafficCameraNode(nodeToCreate.getId()));
 
 		log.debug("NodeOnDB: {}", tcns.getTrafficCameraNodeById(nodeToCreate.getId()).getId());
-		return apiKeyService.generateApiKey().getKey();
+		Map<String,String> body = new HashMap<>();
+		body.put("api-key",apiKeyService.generateApiKey().getKey());
 
+		return body;
+
+	}
+	@PutMapping
+	@ResponseStatus(code = HttpStatus.OK)
+	public void updateNode(@RequestBody NodeDto nodeToUpdate){
+		tcns.addTrafficCameraNode(NodeDto.convertToTCN(nodeToUpdate));
 	}
 
 	//Exeptions
