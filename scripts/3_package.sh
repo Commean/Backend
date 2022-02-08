@@ -1,4 +1,5 @@
-. $PSScriptRoot\common.ps1
+#!/bin/sh
+. $(dirname "$0")/common.sh
 
-Check-For-App-YML
-mvn $mavenCLIOptions -DskipTests package
+check_for_app_yml
+mvn $MAVEN_CLI_OPTS -DskipTests package
