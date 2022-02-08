@@ -1,7 +1,7 @@
 package eu.commean.backend.repo;
 
-import eu.commean.backend.data.TrafficCameraNode;
-import eu.commean.backend.data.TrafficMeasurement;
+import eu.commean.backend.entity.TrafficCameraNode;
+import eu.commean.backend.entity.TrafficMeasurement;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -15,7 +15,7 @@ public interface TrafficMeasurementRepository extends CrudRepository<TrafficMeas
 	Iterable<TrafficMeasurement> findAllByTrafficCameraNode(TrafficCameraNode tcn);
 
 	@Transactional
-	Iterable<TrafficMeasurement> findAllByTimespan(@Param(value = "id") UUID uuid, @Param(value = "days") int days);
+	Iterable<TrafficMeasurement> findAllByTimespan(@Param(value = "id") UUID uuid, @Param(value = "days") int days, @Param(value = "hours") int hours, @Param(value = "minutes") int minutes, @Param(value = "seconds") int seconds);
 
 	Optional<TrafficMeasurement> findLatestById(@Param(value = "id") UUID id);
 

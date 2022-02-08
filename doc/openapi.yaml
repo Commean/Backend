@@ -1,20 +1,174 @@
 openapi: 3.0.0
 info:
   title: Commean API
-  version: 0.0.1
+  version: 1.0.0-DEV
   contact:
     name: Luca Nachbar
     url: commean.eu
-    email: lumi200@tuta.io
+    email: info@commean.eu
   description: 'API documentation for the Commean Backend '
 servers:
   - url: 'http://localhost:8080/api/v1'
     description: Demo on localhost
 paths:
-  /nodes:
+  '/measurements/{node}/now':
     get:
-      summary: Nodes GeoJson
-      tags: []
+      summary: Get current Measurement
+      tags: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    tcnId: 1
+                    currentCars: 0
+                    currentTrucks: 0
+                    averageTimeInPicture: 5
+                    trafficSituation: FEW
+                properties:
+                  tcnId:
+                    type: number
+                  cars:
+                    type: number
+                  trucks:
+                    type: number
+                  averageTimeInPicture:
+                    type: number
+                  trafficSituation:
+                    type: string
+                    minLength: 1
+                required:
+                  - tcnId
+                  - cars
+                  - trucks
+                  - averageTimeInPicture
+                  - trafficSituation
+              examples:
+                Normal Measurement:
+                  value:
+                    tcnId: 1
+                    cars: 0
+                    trucks: 0
+                    averageTimeInPicture: 5
+                    trafficSituation: FEW
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    minLength: 1
+                  status:
+                    type: number
+                  error:
+                    type: string
+                    minLength: 1
+                  message:
+                    type: string
+                    minLength: 1
+                  path:
+                    type: string
+                    minLength: 1
+                required:
+                  - timestamp
+                  - status
+                  - error
+                  - message
+                  - path
+                x-examples:
+                  example-1:
+                    timestamp: '2021-12-22T14:46:02.669+00:00'
+                    status: 404
+                    error: Not Found
+                    message: Invalid ID-format
+                    path: /api/v1/measurements/node/now
+              examples:
+                Invalid Id:
+                  value:
+                    timestamp: '2021-12-22T14:46:02.669+00:00'
+                    status: 404
+                    error: Not Found
+                    message: Invalid ID-format
+                    path: /api/v1/measurements/node/now
+                No Measurement with Id:
+                  value:
+                    timestamp: '2021-12-22T14:46:35.397+00:00'
+                    status: 404
+                    error: Not Found
+                    message: No Traffic Camera Node with given id
+                    path: /api/v1/measurements/node/now
+      operationId: get-measurements-node-now
+      description: Retruns the latest measurement in the database
+      parameters: [ ]
+    parameters:
+      - schema:
+          type: string
+        name: node
+        in: path
+        required: true
+        description: UUID of Node
+  '/measurements/{node}':
+    parameters:
+      - schema:
+          type: string
+        name: node
+        in: path
+        required: true
+        description: UUID of Node
+    post:
+      summary: Create Measurement
+      operationId: post-measurements-node
+      description: Creates a new Measurement for the given node
+      x-internal: false
+      security:
+        - API Key: [ ]
+      parameters: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              x-examples:
+                example-1:
+                  timestamp: '2021-12-07 20:06:22.568'
+                  truckIn: 90532
+                  truckOut: 26280
+                  carIn: 7229
+                  carOut: 12060
+                  averageTimeInPicture: 85924
+                  nodeId: '1'
+              properties:
+                timestamp:
+                  type: string
+                  minLength: 1
+                trucks:
+                  type: number
+                cars:
+                  type: number
+                averageTimeInPicture:
+                  type: number
+              required:
+                - timestamp
+                - trucks
+                - cars
+                - averageTimeInPicture
+      responses:
+        '200':
+          description: OK
+  /nodes/geojson:
+    get:
+      summary: Get GeoJson of Nodes
+      tags: [ ]
       responses:
         '200':
           description: OK
@@ -98,8 +252,8 @@ paths:
                         geometry:
                           type: Point
                           coordinates:
-                           - 14.30504
-                           - 46.63049
+                            - 1
+                            - 2
                         properties:
                           name: TEST_00
                       - type: Feature
@@ -107,121 +261,145 @@ paths:
                         geometry:
                           type: Point
                           coordinates:
-                            - 14.31449
-                            - 46.61867
+                            - 14
+                            - 46
                         properties:
                           name: TEST_01
         '404':
-          $ref: '#/components/responses/404'
-      operationId: get-nodes
-      description: Return all nodes as GeoJson
-  /measurements/node/now:
-    get:
-      summary: Current Measurement
-      tags: []
-      responses:
-        '200':
-          description: OK
+          description: Not Found
           content:
             application/json:
               schema:
                 description: ''
                 type: object
                 properties:
-                  tcnId:
+                  timestamp:
+                    type: string
+                    minLength: 1
+                  status:
                     type: number
-                  currentCars:
-                    type: number
-                  currentTrucks:
-                    type: number
-                  averageTimeInPicture:
-                    type: number
-                  trafficSituation:
+                  error:
+                    type: string
+                    minLength: 1
+                  message:
+                    type: string
+                    minLength: 1
+                  path:
                     type: string
                     minLength: 1
                 required:
-                  - tcnId
-                  - currentCars
-                  - currentTrucks
-                  - averageTimeInPicture
-                  - trafficSituation
+                  - timestamp
+                  - status
+                  - error
+                  - message
+                  - path
                 x-examples:
                   example-1:
-                    tcnId: 1
-                    currentCars: 0
-                    currentTrucks: 0
-                    averageTimeInPicture: 5
-                    trafficSituation: FEW
+                    timestamp: '2021-12-22T13:02:32.317+00:00'
+                    status: 404
+                    error: Not Found
+                    message: No Nodes have been defined
+                    path: /api/v1/nodes
               examples:
-                Random Measurement:
+                No Nodes:
                   value:
-                    tcnId: 1
-                    currentCars: 0
-                    currentTrucks: 0
-                    averageTimeInPicture: 5
-                    trafficSituation: FEW
+                    timestamp: '2021-12-22T13:02:32.317+00:00'
+                    status: 404
+                    error: Not Found
+                    message: No Nodes have been defined
+                    path: /api/v1/nodes
+      operationId: get-nodes-geojson
+      description: Return all nodes as GeoJson
+      parameters: [ ]
+    parameters: [ ]
+  /nodes:
+    post:
+      summary: Register new Node
+      operationId: post-nodes-register
+      description: Registers a new node on the server
+      parameters: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                registrationKey:
+                  type: string
+                nodeId:
+                  type: string
+                  format: uuid
+              required:
+                - registrationKey
+                - nodeId
+        description: ''
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  apiKey:
+                    type: string
+                required:
+                  - apiKey
+        '400':
+          description: Bad Request
+    parameters: [ ]
+    get:
+      summary: Get Node
+      operationId: get-nodes
+      description: Return node with given id
+      responses:
+        '200':
+          description: OK
         '404':
-          $ref: '#/components/responses/404'
-      operationId: get-measurements-node-now
-      description: Retruns the latest measurement in the database
+          description: Not Found
       parameters:
         - schema:
-            type: integer
+            type: string
+            format: uuid
           in: query
           name: id
-          description: Node Id
-          required: true
-components:
-  schemas: {}
-  responses:
-    '404':
-      description: Example response
-      content:
-        application/json:
-          schema:
-            description: ''
-            type: object
-            properties:
-              timestamp:
-                type: string
-                minLength: 1
-              status:
-                type: number
-              error:
-                type: string
-                minLength: 1
-              message:
-                type: string
-                minLength: 1
-              path:
-                type: string
-                minLength: 1
-            required:
-              - timestamp
-              - status
-              - error
-              - message
-              - path
-            x-examples:
+          description: Id of the node to retrive
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+            examples:
               example-1:
-                timestamp: '2021-12-22T13:02:32.317+00:00'
-                status: 404
-                error: Not Found
-                message: No Nodes have been defined
-                path: /api/v1/nodes
-          examples:
-            No Nodes:
-              value:
-                timestamp: '2021-12-22T13:02:32.317+00:00'
-                status: 404
-                error: Not Found
-                message: No Nodes have been defined
-                path: /api/v1/nodes
-            No Measurements with id:
-              value:
-                timestamp: '2021-12-22T13:03:26.119+00:00'
-                status: 404
-                error: Not Found
-                message: No Traffic Camera Node with given id
-                path: /api/v1/measurements/node/now
-  securitySchemes: {}
+                value: { }
+        description: ''
+    put:
+      summary: ''
+      operationId: put-nodes
+      responses:
+        '200':
+          description: OK
+      description: Update information about a node
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            pattern: ' ^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$ '
+          in: query
+          name: id
+          description: Id of the node to update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: { }
+components:
+  schemas: { }
+  responses: { }
+  securitySchemes:
+    API Key:
+      name: api-key
+      type: apiKey
+      in: header
+      description: ''

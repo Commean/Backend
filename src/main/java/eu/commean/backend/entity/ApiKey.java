@@ -1,4 +1,4 @@
-package eu.commean.backend.data;
+package eu.commean.backend.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

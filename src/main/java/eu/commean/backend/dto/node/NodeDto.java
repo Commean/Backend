@@ -1,6 +1,6 @@
 package eu.commean.backend.dto.node;
 
-import eu.commean.backend.data.TrafficCameraNode;
+import eu.commean.backend.entity.TrafficCameraNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,13 +15,20 @@ import java.util.regex.Pattern;
 public class NodeDto {
 
 	private UUID id = new UUID(0, 0);
-	private UUID crossroadId = new UUID(0, 0);
+	private String name = "";
 	private double[] location = {0, 0};
+
+	public NodeDto(UUID id, double[] parseLocation) {
+	}
 
 	public static NodeDto convertToDto(TrafficCameraNode tcn) {
 
-		return new NodeDto(tcn.getId(), tcn.getCrossroad().getId(), parseLocation(tcn.getLocation()));
+		return new NodeDto(tcn.getId(), tcn.getName(), parseLocation(tcn.getLocation()));
 
+	}
+
+	public static TrafficCameraNode convertToTCN(NodeDto node) {
+		return new TrafficCameraNode(node.getId(), node.getName(), "POINT(%s %s)".formatted(node.getLocation()[0], node.getLocation()[1]));
 	}
 
 	private static double[] parseLocation(String location) {

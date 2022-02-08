@@ -11,8 +11,12 @@ import org.springframework.security.core.AuthenticationException;
 @Log4j2
 public class ApiKeyAuthManager implements AuthenticationManager {
 
-	@Autowired
+
 	private ApiKeyService apiKeyService;
+
+	public ApiKeyAuthManager(ApiKeyService apiKeyService) {
+		this.apiKeyService = apiKeyService;
+	}
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {

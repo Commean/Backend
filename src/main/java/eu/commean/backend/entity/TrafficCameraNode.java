@@ -1,4 +1,4 @@
-package eu.commean.backend.data;
+package eu.commean.backend.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -25,62 +25,61 @@ public class TrafficCameraNode {
 	//@GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
 	private UUID id;
 	private String location;
-	@ManyToOne
-	@ToStringExclude
-	@JoinColumn(name = "crossroad_id", referencedColumnName = "id")
-	private Crossroad crossroad;
+	private String name;
 
 	@ToStringExclude
 	@OneToMany(mappedBy = "trafficCameraNode")
 	private List<TrafficMeasurement> trafficMeasurement;
 
+	public TrafficCameraNode(UUID id) {
+		this.id = id;
+	}
+
+	public TrafficCameraNode(UUID id, String location) {
+		this.id = id;
+		this.location = location;
+	}
+
+	public TrafficCameraNode(UUID id, String location, String name) {
+		this.id = id;
+		this.location = location;
+		this.name = name;
+	}
+
 	@Override
 	public int hashCode() {
-		return id.hashCode() * location.hashCode();
+		return id.hashCode() * location.hashCode() * name.hashCode();
 	}
 
 	public UUID getId() {
 		return id;
 	}
 
-	public String getLocation() {
-		return location;
-	}
-
-	public Crossroad getCrossroad() {
-		return crossroad;
-	}
-
-	public List<TrafficMeasurement> getTrafficMeasurement() {
-		return trafficMeasurement;
-	}
-
 	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	public String getLocation() {
+		return location;
 	}
 
 	public void setLocation(String location) {
 		this.location = location;
 	}
 
-	public void setCrossroad(Crossroad crossroad) {
-		this.crossroad = crossroad;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<TrafficMeasurement> getTrafficMeasurement() {
+		return trafficMeasurement;
 	}
 
 	public void setTrafficMeasurement(List<TrafficMeasurement> trafficMeasurement) {
 		this.trafficMeasurement = trafficMeasurement;
-	}
-
-	public TrafficCameraNode(UUID id) {
-		this.id = id;
-	}
-
-	public TrafficCameraNode(String location) {
-		this.location = location;
-	}
-
-	public TrafficCameraNode(UUID id, String location) {
-		this.id = id;
-		this.location = location;
 	}
 }

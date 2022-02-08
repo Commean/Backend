@@ -1,6 +1,6 @@
 package eu.commean.backend.service;
 
-import eu.commean.backend.data.ApiKey;
+import eu.commean.backend.entity.ApiKey;
 
 
 public interface ApiKeyService {
