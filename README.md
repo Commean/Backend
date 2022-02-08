@@ -7,12 +7,12 @@ Use appropriate scripts based on the OS:
 
 ### Linux
 ```sh
-scripts/build.sh
+scripts/3_package.sh
 ```
 
 ### Windows
 ```powershell
-scripts/build.ps1
+scripts/3_package.ps1
 ```
 
 
@@ -22,12 +22,12 @@ The database has to be started BEFORE the Backend.
 
 ### Linux
 ```sh
-scripts/startDB.sh
-scripts/run.sh
+scripts/1_startDB.sh
+scripts/4_run.sh
 ```
 
 ### Windows
 ```powershell
-scripts/startDB.ps1
-scripts/run.ps1
+scripts/1_startDB.ps1
+scripts/4_run.ps1
 ```
