@@ -1,4 +1,4 @@
-package eu.commean.backend.security;
+package eu.commean.backend.security.filter;
 
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 

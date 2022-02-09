@@ -1,7 +1,7 @@
 package eu.commean.backend.config;
 
-import eu.commean.backend.security.ApiKeyAuthFilter;
 import eu.commean.backend.security.ApiKeyAuthManager;
+import eu.commean.backend.security.filter.ApiKeyAuthFilter;
 import eu.commean.backend.service.ApiKeyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
