@@ -13,22 +13,20 @@ public class TrafficMeasurementStatisticsRealtimeDto {
 	private int currentTrucks;
 	private int averageTimeInPicture;
 	private TrafficSituation trafficSituation;
+	private int waitTime = 0;
 
+	//TODO:Better traffic analysation
 	public TrafficSituation calcTrafficSituation() {
 		int trafficAverage = (this.currentCars + this.currentTrucks) * this.averageTimeInPicture;
 
-		if (trafficAverage <= 0)
+		if (trafficAverage < 11) {
 			return TrafficSituation.FEW;
-		if (trafficAverage > 0 && trafficAverage <= 10)
+		} else if (trafficAverage < 30) {
 			return TrafficSituation.SOME;
-		if (trafficAverage > 10 && trafficAverage <= 30)
+		} else if (trafficAverage < 60) {
 			return TrafficSituation.NORMAL;
-		if (trafficAverage > 30 && trafficAverage <= 60)
-			return TrafficSituation.HIGH;
-		if (trafficAverage > 60)
-			return TrafficSituation.JAM;
-		return TrafficSituation.NONE;
-
+		}
+		return TrafficSituation.HIGH;
 	}
 
 	public TrafficMeasurementStatisticsRealtimeDto(UUID trafficCameraNodeId,int currentCars, int currentTrucks, int averageTimeInPicture) {

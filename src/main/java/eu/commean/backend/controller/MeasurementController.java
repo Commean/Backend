@@ -1,10 +1,10 @@
 package eu.commean.backend.controller;
 
-import eu.commean.backend.entity.TrafficCameraNode;
-import eu.commean.backend.entity.TrafficMeasurement;
 import eu.commean.backend.dto.measurement.CreateTrafficMeasurementDto;
 import eu.commean.backend.dto.measurement.TrafficMeasurementStatisticsRealtimeDto;
-import eu.commean.backend.service.TrafficCameraNodeService;
+import eu.commean.backend.entity.Node;
+import eu.commean.backend.entity.TrafficMeasurement;
+import eu.commean.backend.service.NodeService;
 import eu.commean.backend.service.TrafficMeasurementService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class MeasurementController {
 	@Autowired
 	TrafficMeasurementService tms;
 	@Autowired
-	TrafficCameraNodeService tcns;
+	NodeService tcns;
 
 	@GetMapping(value = "/{node}/now")
 	@ResponseStatus(code = HttpStatus.OK)
@@ -60,7 +60,7 @@ public class MeasurementController {
 		log.debug("UUID: {}", uuid);
 
 		TrafficMeasurement tm = new TrafficMeasurement(trafficMeasurement);
-		TrafficCameraNode tcn = tcns.getTrafficCameraNodeById(uuid);
+		Node tcn = tcns.getNodeById(uuid);
 		tm.setTrafficCameraNode(tcn);
 
 		log.debug("Measurement: {}, {}, {}|TrafficCameraNode: {}", tm.getId(), tm.getTrafficCameraNode(),
