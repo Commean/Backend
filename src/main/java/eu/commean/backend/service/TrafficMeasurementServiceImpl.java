@@ -1,6 +1,6 @@
 package eu.commean.backend.service;
 
-import eu.commean.backend.entity.TrafficCameraNode;
+import eu.commean.backend.entity.Node;
 import eu.commean.backend.entity.TrafficMeasurement;
 import eu.commean.backend.repo.TrafficMeasurementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class TrafficMeasurementServiceImpl implements TrafficMeasurementService 
 
 	@Override
 	@Transactional
-	public List<TrafficMeasurement> getMeasurementsByTrafficCameraNode(TrafficCameraNode tcn) {
+	public List<TrafficMeasurement> getMeasurementsByTrafficCameraNode(Node tcn) {
 		return (List<TrafficMeasurement>) trafficMeasurementRepository.findAllByTrafficCameraNode(tcn);
 	}
 
@@ -65,6 +65,14 @@ public class TrafficMeasurementServiceImpl implements TrafficMeasurementService 
 	@Override
 	public TrafficMeasurement getLatestMeasurementFromId(UUID id) {
 		return trafficMeasurementRepository.findLatestById(id).orElse(null);
+	}
+
+	@Override
+	/**
+	 * Returns the current wait time on a given {@link Node}
+	 */
+	public int currentWaitTimeOnNode(UUID id) {
+		return 0;
 	}
 
 

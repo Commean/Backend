@@ -17,9 +17,9 @@ import java.util.UUID;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedNativeQuery(name = "TrafficCameraNode.findAllWhereLocationNotNull", query = "SELECT * FROM nodes n WHERE n.\"location\" NOTNULL;", resultClass = TrafficCameraNode.class)
+@NamedNativeQuery(name = "Node.findAllWhereLocationNotNull", query = "SELECT * FROM nodes n WHERE n.\"location\" NOTNULL;", resultClass = Node.class)
 @EnableAutoConfiguration
-public class TrafficCameraNode {
+public class Node {
 	@Id
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	//@GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
@@ -31,16 +31,16 @@ public class TrafficCameraNode {
 	@OneToMany(mappedBy = "trafficCameraNode")
 	private List<TrafficMeasurement> trafficMeasurement;
 
-	public TrafficCameraNode(UUID id) {
+	public Node(UUID id) {
 		this.id = id;
 	}
 
-	public TrafficCameraNode(UUID id, String location) {
+	public Node(UUID id, String location) {
 		this.id = id;
 		this.location = location;
 	}
 
-	public TrafficCameraNode(UUID id, String location, String name) {
+	public Node(UUID id, String location, String name) {
 		this.id = id;
 		this.location = location;
 		this.name = name;

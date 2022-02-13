@@ -37,10 +37,10 @@ public class TrafficMeasurement {
 	@NonNull
 	@ManyToOne
 	@JoinColumn(name = "trafficcameranode_id", referencedColumnName = "id")
-	private TrafficCameraNode trafficCameraNode;
+	private Node trafficCameraNode;
 
 	public TrafficMeasurement(int trucks, int cars, int averageTimeInPicture, Timestamp timestamp,
-							  TrafficCameraNode trafficCameraNode) {
+							  Node trafficCameraNode) {
 		super();
 		this.trucks = trucks;
 		this.cars = cars;
@@ -102,11 +102,11 @@ public class TrafficMeasurement {
 		this.timestamp = timestamp;
 	}
 
-	public TrafficCameraNode getTrafficCameraNode() {
+	public Node getTrafficCameraNode() {
 		return trafficCameraNode;
 	}
 
-	public void setTrafficCameraNode(TrafficCameraNode trafficCameraNode) {
+	public void setTrafficCameraNode(Node trafficCameraNode) {
 		this.trafficCameraNode = trafficCameraNode;
 	}
 

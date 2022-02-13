@@ -1,6 +1,6 @@
 package eu.commean.backend.repo;
 
-import eu.commean.backend.entity.TrafficCameraNode;
+import eu.commean.backend.entity.Node;
 import eu.commean.backend.entity.TrafficMeasurement;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TrafficMeasurementRepository extends CrudRepository<TrafficMeasurement, UUID> {
-	Iterable<TrafficMeasurement> findAllByTrafficCameraNode(TrafficCameraNode tcn);
+	Iterable<TrafficMeasurement> findAllByTrafficCameraNode(Node tcn);
 
 	@Transactional
 	Iterable<TrafficMeasurement> findAllByTimespan(@Param(value = "id") UUID uuid, @Param(value = "days") int days, @Param(value = "hours") int hours, @Param(value = "minutes") int minutes, @Param(value = "seconds") int seconds);
