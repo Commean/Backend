@@ -1,7 +1,6 @@
 package eu.commean.backend.security.filter;
 
 import eu.commean.backend.security.jwt.JwtProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,9 +20,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtProvider tokenProvider;
 	private final UserDetailsService userDetailsService;
 
-	@Autowired
-	public JwtAuthenticationFilter(JwtProvider tockenProvider, UserDetailsService userDetailsService) {
-		this.tokenProvider = tockenProvider;
+	public JwtAuthenticationFilter(JwtProvider tokenProvider, UserDetailsService userDetailsService) {
+		this.tokenProvider = tokenProvider;
 		this.userDetailsService = userDetailsService;
 	}
 
