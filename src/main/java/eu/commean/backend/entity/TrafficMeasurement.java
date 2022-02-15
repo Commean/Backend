@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
+@IdClass(MeasurementId.class)
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - make_interval(0,0,0,:days,:hours, :minutes,:seconds) AND trafficcameranode_id = :id", resultClass = TrafficMeasurement.class)
@@ -31,6 +32,7 @@ public class TrafficMeasurement {
 
 	private int averageTimeInPicture;
 
+	@Id
 	@NonNull
 	private Timestamp timestamp;
 
