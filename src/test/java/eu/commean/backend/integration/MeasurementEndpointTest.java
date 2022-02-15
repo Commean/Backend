@@ -1,4 +1,4 @@
-package eu.commean.backend;
+package eu.commean.backend.integration;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
