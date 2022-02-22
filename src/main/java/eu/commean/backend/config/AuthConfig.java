@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AuthConfig extends WebSecurityConfigurerAdapter {
-	private static final String API_KEY_AUTH_HEADER_NAME = "api-key";
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -61,6 +61,8 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/v1/auth/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/api/v1/measurements/**").authenticated()
 				.antMatchers(HttpMethod.PUT, "/api/v1/nodes").authenticated()
+				.and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

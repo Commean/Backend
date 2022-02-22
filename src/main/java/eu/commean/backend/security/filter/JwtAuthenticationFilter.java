@@ -1,6 +1,7 @@
 package eu.commean.backend.security.filter;
 
 import eu.commean.backend.security.jwt.JwtProvider;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Log4j2
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private final JwtProvider tokenProvider;
@@ -36,6 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
+				log.debug("Validated JWT: {}", jwt);
 			}
 		} catch (Exception ex) {
 			logger.error("Could not set user authentication in security context", ex);
