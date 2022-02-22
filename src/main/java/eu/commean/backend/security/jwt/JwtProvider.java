@@ -1,7 +1,10 @@
 package eu.commean.backend.security.jwt;
 
 import eu.commean.backend.security.UserPrincipal;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -20,11 +23,15 @@ import java.util.Date;
 public class JwtProvider {
 
 	@Value("${commean.jwt-secret}")
-	//FIXME: Value annotation not working
-	private String jwtSecret = "KQ!*wx%CvK&35En4hD!8GjHUE2d&$*8B";
-	Key jwtKey = new SecretKeySpec(Base64.getEncoder().encode(jwtSecret.getBytes()), SignatureAlgorithm.HS512.getJcaName());
+	private String jwtSecret;
+
 	@Value("${commean.jwt-exp}")
 	private int jwtExpirationInDays;
+
+	private Key getSecretKey() {
+		return new SecretKeySpec(Base64.getDecoder().decode(jwtSecret),
+				SignatureAlgorithm.HS512.getJcaName());
+	}
 
 	public String generateToken(Authentication authentication) {
 		UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
@@ -35,26 +42,24 @@ public class JwtProvider {
 				.setSubject(userPrincipal.getUsername())
 				.setIssuedAt(Date.from(Instant.now()))
 				.setExpiration(expDate)
-				.signWith(jwtKey)
+				.signWith(getSecretKey())
 				.compact();
 	}
 
 	public String getUsernameFromJWT(String token) {
-		Claims claims = (Claims) Jwts.parserBuilder().setSigningKey(jwtKey).build().parse(token).getBody();
+		Claims claims = (Claims) Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parse(token).getBody();
 		return claims.getSubject();
 	}
 
 	public boolean validateToken(String authToken) {
 		try {
-			Jwts.parserBuilder().setSigningKey(jwtKey).build().parseClaimsJws(authToken);
+			Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parseClaimsJws(authToken);
+			log.debug("Valid JWT: {}", authToken);
 			return true;
 
-		} catch (SecurityException ex) {
-		} catch (MalformedJwtException ex) {
-		} catch (ExpiredJwtException ex) {
-		} catch (UnsupportedJwtException ex) {
-		} catch (IllegalArgumentException ex) {
+		} catch (JwtException e) {
+			log.error("Error Invalid JWT (not trusted): {}", authToken);
+			return false;
 		}
-		return false;
 	}
 }
