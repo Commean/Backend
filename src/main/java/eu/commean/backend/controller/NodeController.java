@@ -5,7 +5,6 @@ import eu.commean.backend.dto.node.CreateNodeDto;
 import eu.commean.backend.dto.node.NodeDto;
 import eu.commean.backend.dto.node.NodeGeoJsonDto;
 import eu.commean.backend.entity.Node;
-import eu.commean.backend.service.ApiKeyService;
 import eu.commean.backend.service.NodeService;
 import eu.commean.backend.service.TrafficMeasurementService;
 import lombok.extern.log4j.Log4j2;
@@ -16,9 +15,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Log4j2
@@ -29,14 +26,12 @@ public class NodeController {
 	private NodeService tcns;
 	private TrafficMeasurementService tms;
 	private ModelMapper modelMapper;
-	private ApiKeyService apiKeyService;
 
 	@Autowired
-	public NodeController(NodeService tcns, TrafficMeasurementService tms, ModelMapper modelMapper, ApiKeyService apiKeyService) {
+	public NodeController(NodeService tcns, TrafficMeasurementService tms, ModelMapper modelMapper) {
 		this.tcns = tcns;
 		this.tms = tms;
 		this.modelMapper = modelMapper;
-		this.apiKeyService = apiKeyService;
 	}
 
 	@GetMapping(value = "/geojson", produces = "application/json")
@@ -63,20 +58,16 @@ public class NodeController {
 	// TODO: Implement Registration-Key and generation of API-Key
 	@PostMapping(value = "", consumes = "application/json")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Map<String, String> createNode(@RequestBody CreateNodeDto nodeToCreate) {
+	public void createNode(@RequestBody CreateNodeDto nodeToCreate) {
 		log.debug("CreateNodeDto| Id: {}, RegKey: {}", nodeToCreate.getId(), nodeToCreate.getRegistrationKey());
 		tcns.addNode(new Node(nodeToCreate.getId()));
 
 		log.debug("NodeOnDB: {}", tcns.getNodeById(nodeToCreate.getId()).getId());
-		Map<String,String> body = new HashMap<>();
-		body.put("api-key",apiKeyService.generateApiKey().getKey());
-
-		return body;
-
 	}
+
 	@PutMapping
 	@ResponseStatus(code = HttpStatus.OK)
-	public void updateNode(@RequestBody NodeDto nodeToUpdate){
+	public void updateNode(@RequestBody NodeDto nodeToUpdate) {
 		tcns.addNode(NodeDto.convertToTCN(nodeToUpdate));
 	}
 
