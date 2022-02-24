@@ -15,20 +15,20 @@ import java.util.regex.Pattern;
 public class NodeDto {
 
 	private UUID id = new UUID(0, 0);
-	private String name = "";
 	private double[] location = {0, 0};
+	private String name = "";
 
 	public NodeDto(UUID id, double[] parseLocation) {
 	}
 
 	public static NodeDto convertToDto(Node tcn) {
 
-		return new NodeDto(tcn.getId(), tcn.getName(), parseLocation(tcn.getLocation()));
+		return new NodeDto(tcn.getId(), parseLocation(tcn.getLocation()), tcn.getName());
 
 	}
 
 	public static Node convertToTCN(NodeDto node) {
-		return new Node(node.getId(), node.getName(), "POINT(%s %s)".formatted(node.getLocation()[0], node.getLocation()[1]));
+		return new Node(node.getId(), "POINT(%s %s)".formatted(node.getLocation()[0], node.getLocation()[1]), node.getName());
 	}
 
 	private static double[] parseLocation(String location) {
