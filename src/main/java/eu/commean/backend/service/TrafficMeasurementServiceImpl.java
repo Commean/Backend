@@ -38,8 +38,8 @@ public class TrafficMeasurementServiceImpl implements TrafficMeasurementService 
 
 	@Override
 	@Transactional
-	public List<TrafficMeasurement> getMeasurementsByTrafficCameraNode(Node tcn) {
-		return (List<TrafficMeasurement>) trafficMeasurementRepository.findAllByTrafficCameraNode(tcn);
+	public List<TrafficMeasurement> getMeasurementsByNode(Node tcn) {
+		return (List<TrafficMeasurement>) trafficMeasurementRepository.findAllByNode(tcn);
 	}
 
 

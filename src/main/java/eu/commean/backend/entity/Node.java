@@ -28,7 +28,7 @@ public class Node {
 	private String name;
 
 	@ToStringExclude
-	@OneToMany(mappedBy = "trafficCameraNode")
+	@OneToMany(mappedBy = "node")
 	private List<TrafficMeasurement> trafficMeasurement;
 
 	public Node(UUID id) {

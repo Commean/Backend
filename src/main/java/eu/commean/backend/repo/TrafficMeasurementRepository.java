@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TrafficMeasurementRepository extends CrudRepository<TrafficMeasurement, UUID> {
-	Iterable<TrafficMeasurement> findAllByTrafficCameraNode(Node tcn);
+	Iterable<TrafficMeasurement> findAllByNode(Node tcn);
 
 	@Transactional
 	Iterable<TrafficMeasurement> findAllByTimespan(@Param(value = "id") UUID uuid, @Param(value = "days") int days, @Param(value = "hours") int hours, @Param(value = "minutes") int minutes, @Param(value = "seconds") int seconds);

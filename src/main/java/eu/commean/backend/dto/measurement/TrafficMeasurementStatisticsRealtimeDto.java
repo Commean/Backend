@@ -39,7 +39,7 @@ public class TrafficMeasurementStatisticsRealtimeDto {
 	}
 
 	static public TrafficMeasurementStatisticsRealtimeDto convertToDto(TrafficMeasurement tm) {
-		return new TrafficMeasurementStatisticsRealtimeDto(tm.getTrafficCameraNode().getId(),tm.getCars(), tm.getTrucks	(),
+		return new TrafficMeasurementStatisticsRealtimeDto(tm.getNode().getId(), tm.getCars(), tm.getTrucks(),
 				tm.getAverageTimeInPicture());
 
 	}

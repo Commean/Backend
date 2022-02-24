@@ -15,8 +15,8 @@ import java.util.UUID;
 @IdClass(MeasurementId.class)
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - make_interval(0,0,0,:days,:hours, :minutes,:seconds) AND trafficcameranode_id = :id", resultClass = TrafficMeasurement.class)
-@NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE trafficcameranode_id = :id ORDER BY tm.timestamp LIMIT 1", resultClass = TrafficMeasurement.class)
+@NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - make_interval(0,0,0,:days,:hours, :minutes,:seconds) AND tm.node_id = :id", resultClass = TrafficMeasurement.class)
+@NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE tm.node_id = :id ORDER BY tm.timestamp LIMIT 1", resultClass = TrafficMeasurement.class)
 
 //TODO Implement function to convert PostgreSQL Table to Hypertable from TimeScaleDB on first start
 public class TrafficMeasurement {
@@ -38,18 +38,8 @@ public class TrafficMeasurement {
 
 	@NonNull
 	@ManyToOne
-	@JoinColumn(name = "trafficcameranode_id", referencedColumnName = "id")
-	private Node trafficCameraNode;
-
-	public TrafficMeasurement(int trucks, int cars, int averageTimeInPicture, Timestamp timestamp,
-							  Node trafficCameraNode) {
-		super();
-		this.trucks = trucks;
-		this.cars = cars;
-		this.averageTimeInPicture = averageTimeInPicture;
-		this.timestamp = timestamp;
-		this.trafficCameraNode = trafficCameraNode;
-	}
+	@JoinColumn(name = "node_id", referencedColumnName = "id")
+	private Node node;
 
 	public TrafficMeasurement(CreateTrafficMeasurementDto trafficMeasurement) {
 
@@ -104,12 +94,12 @@ public class TrafficMeasurement {
 		this.timestamp = timestamp;
 	}
 
-	public Node getTrafficCameraNode() {
-		return trafficCameraNode;
+	public Node getNode() {
+		return node;
 	}
 
-	public void setTrafficCameraNode(Node trafficCameraNode) {
-		this.trafficCameraNode = trafficCameraNode;
+	public void setNode(Node node) {
+		this.node = node;
 	}
 
 }

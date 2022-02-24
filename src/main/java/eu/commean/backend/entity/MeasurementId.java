@@ -1,10 +1,13 @@
 package eu.commean.backend.entity;
 
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.UUID;
 
+@NoArgsConstructor
 public class MeasurementId implements Serializable {
 
 	private UUID id;

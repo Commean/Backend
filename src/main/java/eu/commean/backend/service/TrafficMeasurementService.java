@@ -20,7 +20,7 @@ public interface TrafficMeasurementService {
 
 	TrafficMeasurement getTrafficMeasurementById(UUID id);
 
-	List<TrafficMeasurement> getMeasurementsByTrafficCameraNode(Node tcn);
+	List<TrafficMeasurement> getMeasurementsByNode(Node tcn);
 
 	List<TrafficMeasurement> getAllMeasrumentsFromTimespan(UUID id, int days, int hours, int minutes, int seconds);
 

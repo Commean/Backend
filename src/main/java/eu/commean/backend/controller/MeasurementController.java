@@ -23,7 +23,7 @@ public class MeasurementController {
 	@Autowired
 	TrafficMeasurementService tms;
 	@Autowired
-	NodeService tcns;
+	NodeService nodeService;
 
 	@GetMapping(value = "/{node}/now")
 	@ResponseStatus(code = HttpStatus.OK)
@@ -60,10 +60,10 @@ public class MeasurementController {
 		log.debug("UUID: {}", uuid);
 
 		TrafficMeasurement tm = new TrafficMeasurement(trafficMeasurement);
-		Node tcn = tcns.getNodeById(uuid);
-		tm.setTrafficCameraNode(tcn);
+		Node tcn = nodeService.getNodeById(uuid);
+		tm.setNode(tcn);
 
-		log.debug("Measurement: {}, {}, {}|TrafficCameraNode: {}", tm.getId(), tm.getTrafficCameraNode(),
+		log.debug("Measurement: {}, {}, {}|TrafficCameraNode: {}", tm.getId(), tm.getNode(),
 				tm.getTimestamp(), tcn.getId());
 
 		tms.addTrafficMeasurement(tm);
