@@ -37,6 +37,7 @@ public class NodeController {
 	@GetMapping(value = "/geojson", produces = "application/json")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Object getAllNodes() {
+		log.debug("NodeController:[GET] /geojson");
 
 		List<NodeGeoJsonDto> data = tcns.getAllNodesWhereLocationNotNull().stream()
 				.map(node -> NodeGeoJsonDto.mapToDto(node, String.valueOf(10))).toList();
@@ -52,6 +53,7 @@ public class NodeController {
 	@GetMapping(value = "", produces = "application/json")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Object getNode(@RequestParam("id") UUID uuid) {
+		log.debug("NodeController:[GET]");
 		return NodeDto.convertToDto(tcns.getNodeById(uuid));
 	}
 
@@ -59,6 +61,7 @@ public class NodeController {
 	@PostMapping(value = "", consumes = "application/json")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public void createNode(@RequestBody CreateNodeDto nodeToCreate) {
+		log.debug("NodeController:[POST]");
 		log.debug("CreateNodeDto| Id: {}, RegKey: {}", nodeToCreate.getId(), nodeToCreate.getRegistrationKey());
 		tcns.addNode(new Node(nodeToCreate.getId()));
 
@@ -68,6 +71,7 @@ public class NodeController {
 	@PutMapping
 	@ResponseStatus(code = HttpStatus.OK)
 	public void updateNode(@RequestBody NodeDto nodeToUpdate) {
+		log.debug("NodeController:[PUT]");
 		tcns.addNode(NodeDto.convertToTCN(nodeToUpdate));
 	}
 
