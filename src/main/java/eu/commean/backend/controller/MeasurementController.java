@@ -1,9 +1,10 @@
 package eu.commean.backend.controller;
 
-import eu.commean.backend.entity.TrafficCameraNode;
-import eu.commean.backend.entity.TrafficMeasurement;
 import eu.commean.backend.dto.measurement.CreateTrafficMeasurementDto;
 import eu.commean.backend.dto.measurement.TrafficMeasurementStatisticsRealtimeDto;
+import eu.commean.backend.entity.TrafficCameraNode;
+import eu.commean.backend.entity.TrafficMeasurement;
+import eu.commean.backend.security.jwt.JwtProvider;
 import eu.commean.backend.service.TrafficCameraNodeService;
 import eu.commean.backend.service.TrafficMeasurementService;
 import lombok.extern.log4j.Log4j2;
@@ -20,10 +21,17 @@ import java.util.UUID;
 @RequestMapping("api/v1/measurements")
 public class MeasurementController {
 
-	@Autowired
+
 	TrafficMeasurementService tms;
-	@Autowired
 	TrafficCameraNodeService tcns;
+	JwtProvider jwtProvider;
+
+	@Autowired
+	public MeasurementController(TrafficMeasurementService tms, TrafficCameraNodeService tcns, JwtProvider jwtProvider) {
+		this.tms = tms;
+		this.tcns = tcns;
+		this.jwtProvider = jwtProvider;
+	}
 
 	@GetMapping(value = "/{node}/now")
 	@ResponseStatus(code = HttpStatus.OK)
@@ -46,27 +54,35 @@ public class MeasurementController {
 		}
 	}
 
-	// TODO: Add API key check
 	@PostMapping(path = "/{node}", consumes = "application/json")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public void createNewMeasurement(@PathVariable("node") String id,
-									 @RequestBody CreateTrafficMeasurementDto trafficMeasurement) {
+	public void createNewMeasurement(@RequestHeader(name = "Authorization") String token, CreateTrafficMeasurementDto trafficMeasurement) {
 		UUID uuid;
-		if (id.matches("^[a-fA-F\\d]{8}(?:\\-[a-fA-F\\d]{4}){3}\\-[a-fA-F\\d]{12}$"))
-			uuid = UUID.fromString(id);
+		token = token.substring(7);
+		log.debug("Token {}", token);
+		String token_id = jwtProvider.getUsernameFromJWT(token);
+		log.debug("Id {}", token_id);
+
+		if (token_id.matches("^[a-fA-F\\d]{8}(?:\\-[a-fA-F\\d]{4}){3}\\-[a-fA-F\\d]{12}$"))
+			uuid = UUID.fromString(token_id);
 		else
 			uuid = new UUID(0, 0);
 
 		log.debug("UUID: {}", uuid);
 
-		TrafficMeasurement tm = new TrafficMeasurement(trafficMeasurement);
-		TrafficCameraNode tcn = tcns.getTrafficCameraNodeById(uuid);
-		tm.setTrafficCameraNode(tcn);
+		if (!uuid.equals(new UUID(0, 0))) {
+			TrafficMeasurement tm = new TrafficMeasurement(trafficMeasurement);
+			TrafficCameraNode tcn = tcns.getTrafficCameraNodeById(uuid);
+			tm.setTrafficCameraNode(tcn);
 
-		log.debug("Measurement: {}, {}, {}|TrafficCameraNode: {}", tm.getId(), tm.getTrafficCameraNode(),
-				tm.getTimestamp(), tcn.getId());
+			log.debug("Measurement: {}, {}, {}|TrafficCameraNode: {}", tm.getId(), tm.getTrafficCameraNode(),
+					tm.getTimestamp(), tcn.getId());
 
-		tms.addTrafficMeasurement(tm);
+			tms.addTrafficMeasurement(tm);
+		} else {
+			log.warn("{} has no access to create Measurements", token_id);
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The given user from JWT cannot create measurements");
+		}
 	}
 
 
@@ -74,7 +90,7 @@ public class MeasurementController {
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Error in Json (Body)")
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public void handleJsonParseExeption() {
-		//Nothing to do because error is handeld by Spring
+		//Nothing to do because error is handled by Spring
 	}
 
 }
