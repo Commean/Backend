@@ -86,7 +86,7 @@ public class MeasurementController {
 	}
 
 
-	// Exeptions
+	// Exceptions
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Error in Json (Body)")
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public void handleJsonParseExeption() {
