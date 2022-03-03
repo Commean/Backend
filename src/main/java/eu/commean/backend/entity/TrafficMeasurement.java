@@ -9,6 +9,7 @@ import org.postgresql.util.PGTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - make_interval(0,0,0,:days,:hours, :minutes,:seconds) AND tm.node_id = :id", resultClass = TrafficMeasurement.class)
-@NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE tm.node_id = :id ORDER BY tm.timestamp LIMIT 1", resultClass = TrafficMeasurement.class)
+@NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE tm.node_id = :id ORDER BY tm.timestamp DESC LIMIT 1", resultClass = TrafficMeasurement.class)
 
 //TODO Implement function to convert PostgreSQL Table to Hypertable from TimeScaleDB on first start
 public class TrafficMeasurement {
@@ -46,7 +47,7 @@ public class TrafficMeasurement {
 		this.averageTimeInPicture = trafficMeasurement.getAverageTimeInPicture();
 		this.cars = trafficMeasurement.getCars();
 		this.trucks = trafficMeasurement.getTrucks();
-		this.timestamp = trafficMeasurement.getTimestamp();
+		this.timestamp = Timestamp.from(Instant.ofEpochSecond(trafficMeasurement.getTimestamp()));
 	}
 
 	@Override

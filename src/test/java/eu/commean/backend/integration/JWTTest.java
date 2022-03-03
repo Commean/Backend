@@ -31,7 +31,7 @@ public class JWTTest {
 	@DisplayName("Sign up")
 	public void signIn() throws Exception {
 
-		SignUpDto signUpDto = new SignUpDto("demo", "password");
+		SignUpDto signUpDto = new SignUpDto("4e8f0fd7-d936-42f9-9fd1-7b537f3ba690", "password");
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/auth/signup").contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(signUpDto))).andExpect(status().isCreated());
 
@@ -42,7 +42,7 @@ public class JWTTest {
 	@DisplayName("Sign in")
 	public void signUp() throws Exception {
 
-		LoginDto loginDto = new LoginDto("demo", "password");
+		LoginDto loginDto = new LoginDto("4e8f0fd7-d936-42f9-9fd1-7b537f3ba690", "password");
 		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/auth/signin").contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(loginDto))).andExpect(status().isOk()).andReturn();
 		System.setProperty("commean-jwt-token", JsonPath.parse(result.getResponse().getContentAsString()).read("$.token").toString());
