@@ -1,7 +1,7 @@
 package eu.commean.backend.controller;
 
 import eu.commean.backend.dto.measurement.CreateTrafficMeasurementDto;
-import eu.commean.backend.dto.measurement.TrafficMeasurementStatisticsRealtimeDto;
+import eu.commean.backend.dto.measurement.MeasurementPopupDto;
 import eu.commean.backend.entity.Node;
 import eu.commean.backend.entity.TrafficMeasurement;
 import eu.commean.backend.security.jwt.JwtProvider;
@@ -47,10 +47,10 @@ public class MeasurementController {
 		TrafficMeasurement tm = tms.getLatestMeasurementFromId(uuid);
 		if (tm == null) {
 			log.error("No Measurements where found in the last minute for TCN with id: {}", uuid);
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Traffic Camera Node with given id");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Node with given id");
 
 		} else {
-			return TrafficMeasurementStatisticsRealtimeDto.convertToDto(tm, nodeService.getNodeById(tm.getNode().getId()));
+			return MeasurementPopupDto.convertToDto(tm, nodeService.getNodeById(tm.getNode().getId()));
 
 		}
 	}
@@ -85,7 +85,7 @@ public class MeasurementController {
 			tms.addTrafficMeasurement(tm);
 		} else {
 			log.warn("{} has no access to create Measurements", token_id);
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The given user from JWT cannot create measurements");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The given JWT cannot create measurements");
 		}
 	}
 

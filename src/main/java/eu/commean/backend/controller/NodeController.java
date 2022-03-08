@@ -23,13 +23,13 @@ import java.util.UUID;
 @RequestMapping("/api/v1/nodes")
 public class NodeController {
 
-	private NodeService tcns;
+	private NodeService nodeService;
 	private TrafficMeasurementService tms;
 	private ModelMapper modelMapper;
 
 	@Autowired
-	public NodeController(NodeService tcns, TrafficMeasurementService tms, ModelMapper modelMapper) {
-		this.tcns = tcns;
+	public NodeController(NodeService nodeService, TrafficMeasurementService tms, ModelMapper modelMapper) {
+		this.nodeService = nodeService;
 		this.tms = tms;
 		this.modelMapper = modelMapper;
 	}
@@ -39,7 +39,7 @@ public class NodeController {
 	public Object getAllNodes() {
 		log.debug("NodeController:[GET] /geojson");
 
-		List<NodeGeoJsonDto> data = tcns.getAllNodesWhereLocationNotNull().stream()
+		List<NodeGeoJsonDto> data = nodeService.getAllNodesWhereLocationNotNull().stream()
 				.map(node -> NodeGeoJsonDto.mapToDto(node, String.valueOf(10))).toList();
 		MapOverlayGeoJson mapOverlayGeoJson = new MapOverlayGeoJson(data);
 
@@ -54,7 +54,7 @@ public class NodeController {
 	@ResponseStatus(code = HttpStatus.OK)
 	public Object getNode(@RequestParam("id") UUID uuid) {
 		log.debug("NodeController:[GET]");
-		return NodeDto.convertToDto(tcns.getNodeById(uuid));
+		return NodeDto.convertToDto(nodeService.getNodeById(uuid));
 	}
 
 	// TODO: Implement Registration-Key and generation of API-Key
@@ -63,16 +63,16 @@ public class NodeController {
 	public void createNode(@RequestBody CreateNodeDto nodeToCreate) {
 		log.debug("NodeController:[POST]");
 		log.debug("CreateNodeDto| Id: {}, RegKey: {}", nodeToCreate.getId(), nodeToCreate.getRegistrationKey());
-		tcns.addNode(new Node(nodeToCreate.getId()));
+		nodeService.addNode(new Node(nodeToCreate.getId()));
 
-		log.debug("NodeOnDB: {}", tcns.getNodeById(nodeToCreate.getId()).getId());
+		log.debug("NodeOnDB: {}", nodeService.getNodeById(nodeToCreate.getId()).getId());
 	}
 
 	@PutMapping
 	@ResponseStatus(code = HttpStatus.OK)
 	public void updateNode(@RequestBody NodeDto nodeToUpdate) {
 		log.debug("NodeController:[PUT]");
-		tcns.addNode(NodeDto.convertToTCN(nodeToUpdate));
+		nodeService.addNode(NodeDto.convertToTCN(nodeToUpdate));
 	}
 
 	//Exeptions
