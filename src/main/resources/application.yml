@@ -21,3 +21,4 @@ logging:
 server:
   error:
     include-stacktrace: on_param
+

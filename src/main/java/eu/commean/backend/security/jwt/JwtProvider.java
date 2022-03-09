@@ -48,7 +48,6 @@ public class JwtProvider {
 
 	public String getUsernameFromJWT(String token) {
 		Claims claims = (Claims) Jwts.parserBuilder().setSigningKey(getSecretKey()).build().parse(token).getBody();
-		log.debug("Claims: {}", claims);
 		return claims.getSubject();
 	}
 
@@ -61,7 +60,6 @@ public class JwtProvider {
 		} catch (JwtException e) {
 			log.error("Error Invalid JWT (not trusted): {}", authToken);
 			return false;
-
 		}
 	}
 }

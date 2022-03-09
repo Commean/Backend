@@ -17,7 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		log.debug("Server URL is: {}", crossServerAddress);
+		log.info("Server URL is: {}", crossServerAddress);
 		registry.addMapping("/**").allowedOrigins(crossServerAddress);
 	}
 
