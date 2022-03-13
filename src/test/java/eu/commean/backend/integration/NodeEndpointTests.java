@@ -52,7 +52,7 @@ public class NodeEndpointTests {
 	@DisplayName(value = "Update Node")
 	public void updateNode() throws Exception {
 		double[] position = {1.0, 1.0};
-		NodeDto nodeDto = new NodeDto(NODE_UUID, position, "TEST001");
+		NodeDto nodeDto = new NodeDto(NODE_UUID, position, "TEST001", "TEST_TTN_ID");
 
 		mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/nodes")
 						.header("authorization", "Bearer %s".formatted(TOKEN))

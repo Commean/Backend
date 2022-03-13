@@ -71,8 +71,8 @@ public class NodeController {
 	@PutMapping
 	@ResponseStatus(code = HttpStatus.OK)
 	public void updateNode(@RequestBody NodeDto nodeToUpdate) {
-		log.debug("NodeController:[PUT]");
-		nodeService.addNode(NodeDto.convertToTCN(nodeToUpdate));
+		log.debug("NodeController:[PUT], Node: {}", nodeToUpdate);
+		nodeService.updateNode(NodeDto.convertToNode(nodeToUpdate));
 	}
 
 	//Exeptions
