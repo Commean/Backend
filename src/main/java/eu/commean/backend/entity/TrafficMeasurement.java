@@ -10,6 +10,7 @@ import org.postgresql.util.PGTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -31,6 +32,11 @@ public class TrafficMeasurement {
 
 	private int cars;
 
+	private int bus;
+
+	private int motorbike;
+
+
 	private int averageTimeInPicture;
 
 	@Id
@@ -42,17 +48,23 @@ public class TrafficMeasurement {
 	@JoinColumn(name = "node_id", referencedColumnName = "id")
 	private Node node;
 
-	public TrafficMeasurement(CreateTrafficMeasurementDto trafficMeasurement) {
-
-		this.averageTimeInPicture = trafficMeasurement.getAverageTimeInPicture();
-		this.cars = trafficMeasurement.getCars();
-		this.trucks = trafficMeasurement.getTrucks();
-		this.timestamp = Timestamp.from(Instant.ofEpochSecond(trafficMeasurement.getTimestamp()));
+	public TrafficMeasurement(int trucks, int cars, int bus, int motorbike, int averageTimeInPicture, @NonNull Timestamp timestamp) {
+		this.trucks = trucks;
+		this.cars = cars;
+		this.bus = bus;
+		this.motorbike = motorbike;
+		this.averageTimeInPicture = averageTimeInPicture;
+		this.timestamp = timestamp;
 	}
 
-	@Override
-	public int hashCode() {
-		return trucks * cars * averageTimeInPicture;
+	public TrafficMeasurement(CreateTrafficMeasurementDto trafficMeasurementDto) {
+		this.trucks = trafficMeasurementDto.getTrucks();
+		this.cars = trafficMeasurementDto.getCars();
+		this.bus = trafficMeasurementDto.getBus();
+		this.motorbike = trafficMeasurementDto.getMotorbike();
+		this.timestamp = Timestamp.from(Instant.ofEpochSecond(trafficMeasurementDto.getTimestamp()));
+		this.averageTimeInPicture = trafficMeasurementDto.getAverageTimeInPicture();
+
 	}
 
 	public UUID getId() {
@@ -95,12 +107,45 @@ public class TrafficMeasurement {
 		this.timestamp = timestamp;
 	}
 
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	public Node getNode() {
 		return node;
 	}
 
 	public void setNode(Node node) {
 		this.node = node;
+	}
+
+	public int getBus() {
+		return bus;
+	}
+
+	public void setBus(int bus) {
+		this.bus = bus;
+	}
+
+	public int getMotorbike() {
+		return motorbike;
+	}
+
+	public void setMotorbike(int motorbike) {
+		this.motorbike = motorbike;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		TrafficMeasurement that = (TrafficMeasurement) o;
+		return trucks == that.trucks && cars == that.cars && bus == that.bus && motorbike == that.motorbike && averageTimeInPicture == that.averageTimeInPicture && Objects.equals(id, that.id) && timestamp.equals(that.timestamp) && node.equals(that.node);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, trucks, cars, bus, motorbike, averageTimeInPicture, timestamp, node);
 	}
 
 }

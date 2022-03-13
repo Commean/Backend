@@ -58,7 +58,7 @@ public class MeasurementController {
 	// TODO: Add API key check
 	@PostMapping(path = "", consumes = "application/json")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public void createNewMeasurement(@RequestHeader(name = "Authorization") String token, CreateTrafficMeasurementDto trafficMeasurement) {
+	public void createNewMeasurement(@RequestHeader(name = "Authorization") String token, CreateTrafficMeasurementDto trafficMeasurementDto) {
 		UUID uuid;
 		token = token.substring(7);
 		log.debug("Token {}", token);
@@ -72,10 +72,10 @@ public class MeasurementController {
 
 		log.debug("UUID: {}", uuid);
 		if (!uuid.equals(new UUID(0, 0))) {
-			TrafficMeasurement tm = new TrafficMeasurement(trafficMeasurement);
-			log.debug("Measurement: {}", trafficMeasurement);
-			if (trafficMeasurement.getTimestamp() == 0)
-				trafficMeasurement.setTimestamp(Instant.now().getEpochSecond());
+			TrafficMeasurement tm = new TrafficMeasurement(trafficMeasurementDto);
+			log.debug("Measurement: {}", trafficMeasurementDto);
+			if (trafficMeasurementDto.getTimestamp() == 0)
+				trafficMeasurementDto.setTimestamp(Instant.now().getEpochSecond());
 			Node tcn = nodeService.getNodeById(uuid);
 			tm.setNode(tcn);
 

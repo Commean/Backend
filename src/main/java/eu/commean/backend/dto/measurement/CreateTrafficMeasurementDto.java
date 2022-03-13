@@ -11,6 +11,8 @@ public class CreateTrafficMeasurementDto {
 	private long timestamp;
 	private int cars;
 	private int trucks;
+	private int bus;
+	private int motorbike;
 	private int averageTimeInPicture;
 
 }
