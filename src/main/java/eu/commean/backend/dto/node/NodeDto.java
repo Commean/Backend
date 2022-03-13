@@ -17,18 +17,19 @@ public class NodeDto {
 	private UUID id = new UUID(0, 0);
 	private double[] location = {0, 0};
 	private String name = "";
+	private String ttnId = "";
 
 	public NodeDto(UUID id, double[] parseLocation) {
 	}
 
 	public static NodeDto convertToDto(Node tcn) {
 
-		return new NodeDto(tcn.getId(), parseLocation(tcn.getLocation()), tcn.getName());
+		return new NodeDto(tcn.getId(), parseLocation(tcn.getLocation()), tcn.getName(), tcn.getTtnId());
 
 	}
 
-	public static Node convertToTCN(NodeDto node) {
-		return new Node(node.getId(), "POINT(%s %s)".formatted(node.getLocation()[0], node.getLocation()[1]), node.getName());
+	public static Node convertToNode(NodeDto node) {
+		return new Node(node.getId(), "POINT(%s %s)".formatted(node.getLocation()[0], node.getLocation()[1]), node.getName(), node.getTtnId());
 	}
 
 	private static double[] parseLocation(String location) {

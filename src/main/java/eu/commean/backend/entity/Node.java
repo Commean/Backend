@@ -26,6 +26,8 @@ public class Node {
 	private UUID id;
 	private String location;
 	private String name;
+	@Column(name = "ttn_id")
+	private String ttnId;
 
 	@ToStringExclude
 	@OneToMany(mappedBy = "node")
@@ -40,10 +42,11 @@ public class Node {
 		this.location = location;
 	}
 
-	public Node(UUID id, String location, String name) {
+	public Node(UUID id, String location, String name, String ttnId) {
 		this.id = id;
 		this.location = location;
 		this.name = name;
+		this.ttnId = ttnId;
 	}
 
 	@Override
@@ -81,5 +84,13 @@ public class Node {
 
 	public void setTrafficMeasurement(List<TrafficMeasurement> trafficMeasurement) {
 		this.trafficMeasurement = trafficMeasurement;
+	}
+
+	public String getTtnId() {
+		return ttnId;
+	}
+
+	public void setTtnId(String ttnId) {
+		this.ttnId = ttnId;
 	}
 }
