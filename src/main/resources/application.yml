@@ -15,6 +15,10 @@ commean:
   cross-server: http://${FRONTEND_URL:localhost}:8081/
   jwt-secret: ${JWT_SECRET:M2QjcWdpb1VlMkBkTlMjR1RkaSZmY2k2Q3ZKd0pzI15ERmhpNzVYaFVANDY3NyNrZlohbk1SclRwUkZBQyReNVV1VzZAOWVwYSZObTRMRUNIOFQ2b29vNFBYSjk5dHhkR2olODZRRTZLMiFKcmg4YlpEJSY1QXQlJkBkKjJEXkg=}
   jwt-exp: ${JWT_TTL:180}
+  mqtt:
+    ttn-app-id: ${TTN_APP_ID:commean}
+    ttn-url: ${TTN_URL:tcp://localhost}
+    client-id: ${CLIENT_ID:test}
 logging:
   level:
     eu.commean.backend: DEBUG
