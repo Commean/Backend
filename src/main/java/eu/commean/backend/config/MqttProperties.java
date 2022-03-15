@@ -10,6 +10,15 @@ public class MqttProperties {
 	private String ttnAppId;
 	private String ttnUrl;
 	private String clientId;
+	private String ttnApiKey;
+
+	public String getTtnApiKey() {
+		return ttnApiKey;
+	}
+
+	public void setTtnApiKey(String ttnApiKey) {
+		this.ttnApiKey = ttnApiKey;
+	}
 
 	public String getTtnAppId() {
 		return ttnAppId;

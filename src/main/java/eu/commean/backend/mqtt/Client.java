@@ -6,7 +6,7 @@ import org.eclipse.paho.client.mqttv3.*;
 
 @Log4j2
 public class Client {
-	private final static String topicTemplate = "v3/%s/devices/%s/up";
+	private final static String topicTemplate = "v3/%s@ttn/devices/%s/up";
 
 	private static MqttAsyncClient asyncClient;
 
@@ -28,17 +28,29 @@ public class Client {
 
 				MqttConnectOptions connOpts = new MqttConnectOptions();
 				connOpts.setCleanSession(true);
+				connOpts.setUserName("%s@ttn".formatted(mqttProperties.getTtnAppId()));
+				connOpts.setPassword(mqttProperties.getTtnApiKey().toCharArray());
+				log.debug(connOpts.toString());
 				MqttToken token = (MqttToken) asyncClient.connect(connOpts);
 				token.waitForCompletion(5000);
 				log.info("MQTT connected");
 				return true;
 			} catch (MqttException e) {
-				log.error("MQTT connection failed");
+				log.error("MQTT connection failed \n{}", e.toString());
 				return false;
 
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Return the {@link MqttAsyncClient asyncClient} of the Client Object
+	 *
+	 * @return {@link MqttAsyncClient asyncClient}
+	 */
+	public static MqttAsyncClient getAsyncClient() {
+		return asyncClient;
 	}
 
 	public void setCallback(MqttCallback mqttCallback) {
@@ -58,7 +70,7 @@ public class Client {
 			asyncClient.subscribe(topicTemplate.formatted(mqttProperties.getTtnAppId(), devId), qos);
 			return true;
 		} catch (MqttException e) {
-			e.printStackTrace();
+			log.error(e.toString());
 			return false;
 
 		}
@@ -75,22 +87,14 @@ public class Client {
 	public boolean subscribe(String devId) {
 		try {
 			asyncClient.subscribe(topicTemplate.formatted(mqttProperties.getTtnAppId(), devId), 0);
+			log.debug(topicTemplate.formatted(mqttProperties.getTtnAppId(), devId));
 			return true;
 		} catch (MqttException e) {
-			e.printStackTrace();
+			log.error(e.toString());
 			return false;
 
 		}
 
-	}
-
-	/**
-	 * Return the {@link MqttAsyncClient asyncClient} of the Client Object
-	 *
-	 * @return {@link MqttAsyncClient asyncClient}
-	 */
-	public MqttAsyncClient getAsyncClient() {
-		return asyncClient;
 	}
 
 }
