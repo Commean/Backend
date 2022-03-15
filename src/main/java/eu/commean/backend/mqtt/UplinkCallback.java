@@ -1,6 +1,7 @@
 package eu.commean.backend.mqtt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.commean.backend.entity.Node;
 import eu.commean.backend.entity.TrafficMeasurement;
 import eu.commean.backend.pojo.mqtt.Payload;
 import eu.commean.backend.pojo.mqtt.ttn.TTNResponse;
@@ -9,6 +10,7 @@ import eu.commean.backend.service.TrafficMeasurementService;
 import lombok.extern.log4j.Log4j2;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.sql.Timestamp;
@@ -31,7 +33,12 @@ public class UplinkCallback implements MqttCallback {
 
 	@Override
 	public void connectionLost(Throwable cause) {
-		log.error("Connection was lost!\nReason: {}", cause.getMessage());
+		log.error("Connection was lost!\nReason: {}", cause.toString());
+		try {
+			Client.getAsyncClient().reconnect();
+		} catch (MqttException e) {
+			log.error(e.toString());
+		}
 	}
 
 	@Override
@@ -39,9 +46,14 @@ public class UplinkCallback implements MqttCallback {
 		TTNResponse response = objectMapper.readValue(message.toString(), TTNResponse.class);
 		Payload payload = objectMapper.readValue(response.getUplinkMessage().getDecodedPayload().getText(), Payload.class);
 		TrafficMeasurement trafficMeasurement = new TrafficMeasurement(payload.getCount().getTruck(), payload.getCount().getCar(), payload.getCount().getBus(), payload.getCount().getMotorbike(), payload.getAtip(), Timestamp.from(Instant.ofEpochSecond((Math.round(payload.getTime())))));
-		trafficMeasurement.setNode(nodeService.getNodeById(UUID.fromString(payload.getId())));
-		measurementService.addTrafficMeasurement(trafficMeasurement);
+		Node node = nodeService.getNodeById(UUID.fromString(payload.getId()));
+		if (node != null) {
 
+			trafficMeasurement.setNode(node);
+			measurementService.addTrafficMeasurement(trafficMeasurement);
+		} else {
+			log.error("No node with given ID: {}", payload.getId());
+		}
 	}
 
 	@Override
