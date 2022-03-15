@@ -13,4 +13,10 @@ public interface NodeRepository extends CrudRepository<Node, UUID> {
 
 
 	Iterable<Node> findAllWhereLocationNotNull();
+
+	Iterable<Node> findByTtnIdIsNotNull();
+
+	Optional<Node> findByTtnId(String ttnId);
+
+
 }

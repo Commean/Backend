@@ -23,5 +23,9 @@ public interface NodeService {
 
 	List<Node> getAllNodesWhereLocationNotNull();
 
+	List<Node> getAllNodesWithTTNConnection();
+
+	Node getNodeByTTNId(String ttnId);
+
 	void deleteNodeById(UUID id);
 }

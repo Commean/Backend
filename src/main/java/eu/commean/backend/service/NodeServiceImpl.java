@@ -52,12 +52,24 @@ public class NodeServiceImpl implements NodeService {
 	@Override
 	@Transactional
 	public Node getNodeById(UUID id) {
-		return nodeRepository.findById(id).orElse(null);
+		return nodeRepository.findById(id).orElse(new Node(new UUID(0, 0), "null"));
 	}
 
 	@Override
 	public List<Node> getAllNodesWhereLocationNotNull() {
 		return (List<Node>) nodeRepository.findAllWhereLocationNotNull();
+	}
+
+	@Override
+	public List<Node> getAllNodesWithTTNConnection() {
+		return (List<Node>) nodeRepository.findByTtnIdIsNotNull();
+	}
+
+	@Override
+	@Transactional
+	public Node getNodeByTTNId(String ttnId) {
+		Node node = nodeRepository.findByTtnId(ttnId).orElse(null);
+		return node;
 	}
 
 	@Override
