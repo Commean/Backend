@@ -50,7 +50,7 @@ public class MeasurementEndpointTest {
 	@Order(1)
 	public void createMeasurement() throws Exception {
 		CreateTrafficMeasurementDto createTrafficMeasurementDto = new CreateTrafficMeasurementDto(Instant.now().getEpochSecond(), 1, 1, 1, 1, 1);
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/measurements/oof", NODE_UUID.toString())
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/measurements", NODE_UUID.toString())
 						.header("authorization", "Bearer %s".formatted(TOKEN))
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(mapper.writeValueAsString(createTrafficMeasurementDto)))
