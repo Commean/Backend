@@ -26,7 +26,7 @@ public class RxMetadatum {
     @JsonProperty("time")
     private String time;
     @JsonProperty("timestamp")
-    private Integer timestamp;
+    private Long timestamp;
     @JsonProperty("rssi")
     private Integer rssi;
     @JsonProperty("channel_rssi")
@@ -61,12 +61,12 @@ public class RxMetadatum {
     }
 
     @JsonProperty("timestamp")
-    public Integer getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
     @JsonProperty("timestamp")
-    public void setTimestamp(Integer timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 

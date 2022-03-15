@@ -25,7 +25,7 @@ public class Settings {
     @JsonProperty("frequency")
     private String frequency;
     @JsonProperty("timestamp")
-    private Integer timestamp;
+    private Long timestamp;
     @JsonProperty("time")
     private String time;
     @JsonIgnore
@@ -62,12 +62,12 @@ public class Settings {
     }
 
     @JsonProperty("timestamp")
-    public Integer getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
     @JsonProperty("timestamp")
-    public void setTimestamp(Integer timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
