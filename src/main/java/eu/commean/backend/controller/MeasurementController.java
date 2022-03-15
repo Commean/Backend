@@ -34,7 +34,7 @@ public class MeasurementController {
 		this.jwtProvider = jwtProvider;
 	}
 
-	@GetMapping(value = "/{node}/now")
+	@GetMapping(value = "/{node}/now", produces = "application/json")
 	@ResponseStatus(code = HttpStatus.OK)
 
 	public Object getNewestMeasurementFromNode(@PathVariable("node") String id) {
@@ -55,7 +55,6 @@ public class MeasurementController {
 		}
 	}
 
-	// TODO: Add API key check
 	@PostMapping(path = "", consumes = "application/json")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public void createNewMeasurement(@RequestHeader(name = "Authorization") String token, CreateTrafficMeasurementDto trafficMeasurementDto) {

@@ -6,9 +6,7 @@ import eu.commean.backend.dto.node.NodeDto;
 import eu.commean.backend.dto.node.NodeGeoJsonDto;
 import eu.commean.backend.entity.Node;
 import eu.commean.backend.service.NodeService;
-import eu.commean.backend.service.TrafficMeasurementService;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -24,14 +22,11 @@ import java.util.UUID;
 public class NodeController {
 
 	private NodeService nodeService;
-	private TrafficMeasurementService tms;
-	private ModelMapper modelMapper;
+
 
 	@Autowired
-	public NodeController(NodeService nodeService, TrafficMeasurementService tms, ModelMapper modelMapper) {
+	public NodeController(NodeService nodeService) {
 		this.nodeService = nodeService;
-		this.tms = tms;
-		this.modelMapper = modelMapper;
 	}
 
 	@GetMapping(value = "/geojson", produces = "application/json")
@@ -57,18 +52,18 @@ public class NodeController {
 		return NodeDto.convertToDto(nodeService.getNodeById(uuid));
 	}
 
-	// TODO: Implement Registration-Key and generation of API-Key
+	// TODO: Implement Registration-Key
 	@PostMapping(value = "", consumes = "application/json")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public void createNode(@RequestBody CreateNodeDto nodeToCreate) {
 		log.debug("NodeController:[POST]");
-		log.debug("CreateNodeDto| Id: {}, RegKey: {}", nodeToCreate.getId(), nodeToCreate.getRegistrationKey());
+		log.debug("CreateNodeDto| Id: {}, RegKey: {}", nodeToCreate.getId(), nodeToCreate.getTtnId());
 		nodeService.addNode(new Node(nodeToCreate.getId()));
 
 		log.debug("NodeOnDB: {}", nodeService.getNodeById(nodeToCreate.getId()).getId());
 	}
 
-	@PutMapping
+	@PutMapping(consumes = "application/json")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void updateNode(@RequestBody NodeDto nodeToUpdate) {
 		log.debug("NodeController:[PUT], Node: {}", nodeToUpdate);

@@ -43,7 +43,7 @@ public class AuthController {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	@PostMapping("/signin")
+	@PostMapping(value = "/signin", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<JwtResponseDto> authenticateUser(@RequestBody LoginDto loginDto) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
@@ -53,7 +53,7 @@ public class AuthController {
 
 	}
 
-	@PostMapping("/signup")
+	@PostMapping(value = "/signup", consumes = "application/json", produces = "application/text")
 	public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
 
 		if (userRepository.existsByUsername(signUpDto.getUsername())) {
