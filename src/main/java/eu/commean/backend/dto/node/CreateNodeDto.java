@@ -12,7 +12,7 @@ import java.util.UUID;
 public class CreateNodeDto {
 
 	private UUID id;
-	private String registrationKey;
+	private String ttnId;
 
 
 }

@@ -13,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -50,8 +49,8 @@ public class MeasurementEndpointTest {
 	@Test
 	@Order(1)
 	public void createMeasurement() throws Exception {
-		CreateTrafficMeasurementDto createTrafficMeasurementDto = new CreateTrafficMeasurementDto(Timestamp.from(Instant.now()), 1, 1, 1);
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/measurements/{node}", NODE_UUID.toString())
+		CreateTrafficMeasurementDto createTrafficMeasurementDto = new CreateTrafficMeasurementDto(Instant.now().getEpochSecond(), 1, 1, 1, 1, 1);
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/measurements", NODE_UUID.toString())
 						.header("authorization", "Bearer %s".formatted(TOKEN))
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(mapper.writeValueAsString(createTrafficMeasurementDto)))

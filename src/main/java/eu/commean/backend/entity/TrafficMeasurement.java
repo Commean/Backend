@@ -9,13 +9,16 @@ import org.postgresql.util.PGTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
+@IdClass(MeasurementId.class)
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - make_interval(0,0,0,:days,:hours, :minutes,:seconds) AND trafficcameranode_id = :id", resultClass = TrafficMeasurement.class)
-@NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE trafficcameranode_id = :id ORDER BY tm.timestamp LIMIT 1", resultClass = TrafficMeasurement.class)
+@NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - make_interval(0,0,0,:days,:hours, :minutes,:seconds) AND tm.node_id = :id", resultClass = TrafficMeasurement.class)
+@NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE tm.node_id = :id ORDER BY tm.timestamp DESC LIMIT 1", resultClass = TrafficMeasurement.class)
 
 //TODO Implement function to convert PostgreSQL Table to Hypertable from TimeScaleDB on first start
 public class TrafficMeasurement {
@@ -29,37 +32,39 @@ public class TrafficMeasurement {
 
 	private int cars;
 
+	private int bus;
+
+	private int motorbike;
+
+
 	private int averageTimeInPicture;
 
+	@Id
 	@NonNull
 	private Timestamp timestamp;
 
 	@NonNull
 	@ManyToOne
-	@JoinColumn(name = "trafficcameranode_id", referencedColumnName = "id")
-	private TrafficCameraNode trafficCameraNode;
+	@JoinColumn(name = "node_id", referencedColumnName = "id")
+	private Node node;
 
-	public TrafficMeasurement(int trucks, int cars, int averageTimeInPicture, Timestamp timestamp,
-							  TrafficCameraNode trafficCameraNode) {
-		super();
+	public TrafficMeasurement(int trucks, int cars, int bus, int motorbike, int averageTimeInPicture, @NonNull Timestamp timestamp) {
 		this.trucks = trucks;
 		this.cars = cars;
+		this.bus = bus;
+		this.motorbike = motorbike;
 		this.averageTimeInPicture = averageTimeInPicture;
 		this.timestamp = timestamp;
-		this.trafficCameraNode = trafficCameraNode;
 	}
 
-	public TrafficMeasurement(CreateTrafficMeasurementDto trafficMeasurement) {
+	public TrafficMeasurement(CreateTrafficMeasurementDto trafficMeasurementDto) {
+		this.trucks = trafficMeasurementDto.getTrucks();
+		this.cars = trafficMeasurementDto.getCars();
+		this.bus = trafficMeasurementDto.getBus();
+		this.motorbike = trafficMeasurementDto.getMotorbike();
+		this.timestamp = Timestamp.from(Instant.ofEpochSecond(trafficMeasurementDto.getTimestamp()));
+		this.averageTimeInPicture = trafficMeasurementDto.getAverageTimeInPicture();
 
-		this.averageTimeInPicture = trafficMeasurement.getAverageTimeInPicture();
-		this.cars = trafficMeasurement.getCars();
-		this.trucks = trafficMeasurement.getTrucks();
-		this.timestamp = trafficMeasurement.getTimestamp();
-	}
-
-	@Override
-	public int hashCode() {
-		return trucks * cars * averageTimeInPicture;
 	}
 
 	public UUID getId() {
@@ -102,12 +107,45 @@ public class TrafficMeasurement {
 		this.timestamp = timestamp;
 	}
 
-	public TrafficCameraNode getTrafficCameraNode() {
-		return trafficCameraNode;
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
 	}
 
-	public void setTrafficCameraNode(TrafficCameraNode trafficCameraNode) {
-		this.trafficCameraNode = trafficCameraNode;
+	public Node getNode() {
+		return node;
+	}
+
+	public void setNode(Node node) {
+		this.node = node;
+	}
+
+	public int getBus() {
+		return bus;
+	}
+
+	public void setBus(int bus) {
+		this.bus = bus;
+	}
+
+	public int getMotorbike() {
+		return motorbike;
+	}
+
+	public void setMotorbike(int motorbike) {
+		this.motorbike = motorbike;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		TrafficMeasurement that = (TrafficMeasurement) o;
+		return trucks == that.trucks && cars == that.cars && bus == that.bus && motorbike == that.motorbike && averageTimeInPicture == that.averageTimeInPicture && Objects.equals(id, that.id) && timestamp.equals(that.timestamp) && node.equals(that.node);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, trucks, cars, bus, motorbike, averageTimeInPicture, timestamp, node);
 	}
 
 }
