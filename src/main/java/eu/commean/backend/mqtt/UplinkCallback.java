@@ -44,16 +44,21 @@ public class UplinkCallback implements MqttCallback {
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
 		TTNResponse response = objectMapper.readValue(message.toString(), TTNResponse.class);
-		Payload payload = objectMapper.readValue(response.getUplinkMessage().getDecodedPayload().getText(), Payload.class);
-		TrafficMeasurement trafficMeasurement = new TrafficMeasurement(payload.getCount().getTruck(), payload.getCount().getCar(), payload.getCount().getBus(), payload.getCount().getMotorbike(), payload.getAtip(), Timestamp.from(Instant.ofEpochSecond((Math.round(payload.getTime())))));
-		Node node = nodeService.getNodeById(UUID.fromString(payload.getId()));
-		if (node != null) {
+		if (response.getUplinkMessage().getDecodedPayload() != null) {
+			Payload payload = objectMapper.readValue(response.getUplinkMessage().getDecodedPayload().getText(), Payload.class);
+			TrafficMeasurement trafficMeasurement = new TrafficMeasurement(payload.getCount().getTruck(), payload.getCount().getCar(), payload.getCount().getBus(), payload.getCount().getMotorbike(), payload.getAtip(), Timestamp.from(Instant.ofEpochSecond((Math.round(payload.getTime())))));
+			Node node = nodeService.getNodeById(UUID.fromString(payload.getId()));
+			if (node != null) {
 
-			trafficMeasurement.setNode(node);
-			measurementService.addTrafficMeasurement(trafficMeasurement);
+				trafficMeasurement.setNode(node);
+				measurementService.addTrafficMeasurement(trafficMeasurement);
+			} else {
+				log.error("No node with given ID: {}", payload.getId());
+			}
 		} else {
-			log.error("No node with given ID: {}", payload.getId());
+			log.error("No Payload in TTN_Response\n{}", message.toString());
 		}
+
 	}
 
 	@Override
