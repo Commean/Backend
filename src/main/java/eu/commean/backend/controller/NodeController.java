@@ -57,8 +57,8 @@ public class NodeController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public void createNode(@RequestBody CreateNodeDto nodeToCreate) {
 		log.debug("NodeController:[POST]");
-		log.debug("CreateNodeDto| Id: {}, RegKey: {}", nodeToCreate.getId(), nodeToCreate.getTtnId());
-		nodeService.addNode(new Node(nodeToCreate.getId()));
+		log.debug("CreateNodeDto| id: {}, ttn-id: {}", nodeToCreate.getId(), nodeToCreate.getTtnId());
+		nodeService.addNode(new Node(nodeToCreate.getId(), nodeToCreate.getTtnId()));
 
 		log.debug("NodeOnDB: {}", nodeService.getNodeById(nodeToCreate.getId()).getId());
 	}

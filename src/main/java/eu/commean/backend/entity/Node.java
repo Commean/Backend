@@ -37,9 +37,9 @@ public class Node {
 		this.id = id;
 	}
 
-	public Node(UUID id, String location) {
+	public Node(UUID id, String ttnId) {
 		this.id = id;
-		this.location = location;
+		this.ttnId = ttnId;
 	}
 
 	public Node(UUID id, String location, String name, String ttnId) {
