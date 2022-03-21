@@ -1,6 +1,6 @@
 package eu.commean.backend.entity;
 
-import eu.commean.backend.dto.measurement.CreateTrafficMeasurementDto;
+import eu.commean.backend.pojo.mqtt.Payload;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NamedNativeQuery(name = "TrafficMeasurement.findAllByTimespan", query = "SELECT * FROM traffic_measurement tm WHERE tm.timestamp > now() - make_interval(0,0,0,:days,:hours, :minutes,:seconds) AND tm.node_id = :id", resultClass = TrafficMeasurement.class)
 @NamedNativeQuery(name = "TrafficMeasurement.findLatestById", query = "SELECT * FROM traffic_measurement tm WHERE tm.node_id = :id ORDER BY tm.timestamp DESC LIMIT 1", resultClass = TrafficMeasurement.class)
-
+@NamedNativeQuery(name = "TrafficMeasurement.createHypertable", query = "SELECT CREATE_HYPERTABLE('traffic_measurement','timestamp',migrate_data => TRUE);")
 //TODO Implement function to convert PostgreSQL Table to Hypertable from TimeScaleDB on first start
 public class TrafficMeasurement {
 
@@ -57,14 +57,13 @@ public class TrafficMeasurement {
 		this.timestamp = timestamp;
 	}
 
-	public TrafficMeasurement(CreateTrafficMeasurementDto trafficMeasurementDto) {
-		this.trucks = trafficMeasurementDto.getTrucks();
-		this.cars = trafficMeasurementDto.getCars();
-		this.bus = trafficMeasurementDto.getBus();
-		this.motorbike = trafficMeasurementDto.getMotorbike();
-		this.timestamp = Timestamp.from(Instant.ofEpochSecond(trafficMeasurementDto.getTimestamp()));
-		this.averageTimeInPicture = trafficMeasurementDto.getAverageTimeInPicture();
-
+	public TrafficMeasurement(Payload payload) {
+		this.trucks = payload.getCount().getTruck();
+		this.cars = payload.getCount().getCar();
+		this.bus = payload.getCount().getBus();
+		this.motorbike = payload.getCount().getMotorbike();
+		this.timestamp = Timestamp.from(Instant.ofEpochSecond(Math.round(payload.getTime())));
+		this.averageTimeInPicture = payload.getAtip();
 	}
 
 	public UUID getId() {

@@ -1,9 +1,9 @@
 package eu.commean.backend.controller;
 
-import eu.commean.backend.dto.measurement.CreateTrafficMeasurementDto;
 import eu.commean.backend.dto.measurement.MeasurementPopupDto;
 import eu.commean.backend.entity.Node;
 import eu.commean.backend.entity.TrafficMeasurement;
+import eu.commean.backend.pojo.mqtt.Payload;
 import eu.commean.backend.security.jwt.JwtProvider;
 import eu.commean.backend.service.NodeService;
 import eu.commean.backend.service.TrafficMeasurementService;
@@ -14,7 +14,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @Log4j2
@@ -57,7 +56,7 @@ public class MeasurementController {
 
 	@PostMapping(path = "", consumes = "application/json")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public void createNewMeasurement(@RequestHeader(name = "Authorization") String token, CreateTrafficMeasurementDto trafficMeasurementDto) {
+	public void createNewMeasurement(@RequestHeader(name = "Authorization") String token, @RequestBody Payload payload) {
 		UUID uuid;
 		token = token.substring(7);
 		log.debug("Token {}", token);
@@ -71,10 +70,10 @@ public class MeasurementController {
 
 		log.debug("UUID: {}", uuid);
 		if (!uuid.equals(new UUID(0, 0))) {
-			TrafficMeasurement tm = new TrafficMeasurement(trafficMeasurementDto);
-			log.debug("Measurement: {}", trafficMeasurementDto);
-			if (trafficMeasurementDto.getTimestamp() == 0)
-				trafficMeasurementDto.setTimestamp(Instant.now().getEpochSecond());
+			log.debug("Measurement: {}", payload);
+			if (payload.getTime() == 0)
+				log.error("Invalid timestamp");
+			TrafficMeasurement tm = new TrafficMeasurement(payload);
 			Node tcn = nodeService.getNodeById(uuid);
 			tm.setNode(tcn);
 
